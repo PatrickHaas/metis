@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    jacoco
     id("org.sonarqube") version "4.4.1.3373"
 }
 
@@ -15,15 +16,6 @@ sonar {
         property("sonar.projectKey", "PatrickHaas_metis")
         property("sonar.organization", "patrick-haas")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "$rootDir/build/reports/jacoco/jacocoFullReport/jacocoFullReport.xml")
-    }
-}
-
-subprojects {
-    sonarqube {
-        properties {
-            property("sonar.coverage.jacoco.xmlReportPaths", "$projectDir.parentFile.path/build/reports/jacoco/codeCoverageReport/codeCoverageReport.xml")
-        }
     }
 }
 
