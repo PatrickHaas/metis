@@ -37,6 +37,7 @@ class GroupTest {
         PermissionId permissionId = new PermissionId(UUID.randomUUID());
         group.assignPermission(permissionId);
         assertThat(group.domainEvents()).containsExactly(new PermissionAssigned(group.getId(), permissionId));
+        assertThat(group.getAssignedPermissions()).containsExactly(permissionId);
     }
 
 }
