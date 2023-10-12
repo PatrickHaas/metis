@@ -26,3 +26,4 @@ include("metis-common:metis-common-adapters")
 
 include("metis-employees:metis-employees-domain")
 include("metis-employees:metis-employees-application")
+include("metis-employees:metis-employees-adapters")
