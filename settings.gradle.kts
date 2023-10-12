@@ -22,5 +22,7 @@ dependencyResolutionManagement {
 
 include("metis-common:metis-common-domain")
 include("metis-common:metis-common-application")
+include("metis-common:metis-common-adapters")
+
 include("metis-employees:metis-employees-domain")
 include("metis-employees:metis-employees-application")
