@@ -51,4 +51,15 @@ class PermissionFactoryTest {
         assertThat(group.getInitiatedAt()).isNull();
     }
 
+    @Test
+    void create_shouldPassAllParameters() {
+        PermissionFactory factory = new PermissionFactory();
+        UUID uuid = UUID.randomUUID();
+        LocalDateTime initiatedAt = LocalDateTime.now();
+        Permission group = factory.create(uuid, "permission:a", "Best permission there is", initiatedAt);
+        assertThat(group.getId().value()).isEqualTo(uuid);
+        assertThat(group.getKey().value()).isEqualTo("permission:a");
+        assertThat(group.getDescription().value()).isEqualTo("Best permission there is");
+        assertThat(group.getInitiatedAt()).isEqualTo(initiatedAt);
+    }
 }
