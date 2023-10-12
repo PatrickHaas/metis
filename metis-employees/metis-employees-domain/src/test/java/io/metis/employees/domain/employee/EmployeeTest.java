@@ -1,6 +1,7 @@
 package io.metis.employees.domain.employee;
 
 import io.metis.common.domain.employee.EmployeeId;
+import io.metis.employees.domain.group.GroupId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -34,6 +35,15 @@ class EmployeeTest {
         assertThat(employee.getEmailAddress().value()).isEqualTo("peter@avengers.com");
         assertThat(employee.getJobTitle()).isEqualTo("Spiderman");
         assertThat(employee.domainEvents()).containsExactly(new EmployeeUpdated(employeeId));
+    }
+
+    @Test
+    void assignToGroup_shouldAddGroupToAssignedOnesAndCreateDomainEvent() {
+        EmployeeId employeeId = new EmployeeId(UUID.randomUUID());
+        Employee employee = new Employee(employeeId, new FirstName("Tony"), new LastName("Stark"), DateOfBirth.of(1980, 5, 28), HiredOn.now(), new EmailAddress("tony@avengers.com"), "Iron-Man", new HashSet<>());
+        GroupId groupId = new GroupId(UUID.randomUUID());
+        employee.assignToGroup(groupId);
+        assertThat(employee.domainEvents()).containsExactly(new EmployeeAssignedToGroup(employeeId, groupId));
     }
 
 }
