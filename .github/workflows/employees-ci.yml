@@ -19,6 +19,12 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: validate gradle wrapper
+        uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+
+      - name: make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
