@@ -16,16 +16,16 @@ import java.util.Set;
 public class Group extends AggregateRoot<GroupId> {
     @Identity
     private final GroupId id;
-    private final String name;
-    private final String description;
+    private final GroupName name;
+    private final GroupDescription description;
     private final Set<PermissionId> assignedPermissions;
     private LocalDateTime initiatedAt;
 
-    public Group(GroupId id, String name, String description, LocalDateTime initiatedAt) {
+    public Group(GroupId id, GroupName name, GroupDescription description, LocalDateTime initiatedAt) {
         this(id, name, description, new HashSet<>(), initiatedAt);
     }
 
-    public Group(GroupId id, String name, String description) {
+    public Group(GroupId id, GroupName name, GroupDescription description) {
         this(id, name, description, new HashSet<>(), null);
     }
 
