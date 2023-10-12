@@ -11,6 +11,7 @@ import io.metis.employees.application.permission.PermissionPrimaryPort;
 import io.metis.employees.domain.employee.Employee;
 import io.metis.employees.domain.group.Group;
 import io.metis.employees.domain.permission.Permission;
+import io.metis.employees.domain.permission.PermissionKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,7 +58,9 @@ public class EmployeeModuleInitializer implements ModuleInitializer {
                 new InitiatePermissionCommand("employees:groups:initiate", "")
         );
 
-        List<String> existingPermissionKeys = existingPermissions.stream().map(Permission::getKey).toList();
+        List<String> existingPermissionKeys = existingPermissions.stream()
+                .map(Permission::getKey)
+                .map(PermissionKey::value).toList();
         List<InitiatePermissionCommand> newInitiatePermissionCommands = initiatePermissionCommands.stream().filter(command -> !existingPermissionKeys.contains(command.key())).toList();
         List<Permission> newPermissions = new ArrayList<>();
         for (InitiatePermissionCommand newPermission : newInitiatePermissionCommands) {
