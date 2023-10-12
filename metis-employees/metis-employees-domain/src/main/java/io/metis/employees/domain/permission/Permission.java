@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
 public class Permission extends AggregateRoot<PermissionId> {
     @Identity
     private final PermissionId id;
-    private final String key;
-    private final String description;
+    private final PermissionKey key;
+    private final PermissionDescription description;
     private LocalDateTime initiatedAt;
 
-    public Permission(PermissionId id, String key, String description) {
+    public Permission(PermissionId id, PermissionKey key, PermissionDescription description) {
         this.id = id;
         this.key = key;
         this.description = description;

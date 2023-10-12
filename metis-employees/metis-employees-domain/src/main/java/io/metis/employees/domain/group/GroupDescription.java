@@ -1,5 +1,8 @@
 package io.metis.employees.domain.group;
 
+import org.jmolecules.ddd.annotation.ValueObject;
+
+@ValueObject
 public record GroupDescription(String value) {
     static final int MIN_LENGTH = 10;
     static final int MAX_LENGTH = 200;
