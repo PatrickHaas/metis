@@ -11,6 +11,12 @@ repositories {
     mavenCentral()
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "PatrickHaas_metis")
