@@ -32,13 +32,12 @@ public class EmployeeModuleInitializer implements ModuleInitializer {
     public void initialize() {
         List<Permission> newPermissions = getOrCreatePermissions();
         Group administrationGroup = getOrCreateAdministrationGroup(newPermissions);
-        employeePrimaryPort.findByEmailAddress("administrator@consultio.de").orElseGet(() -> {
+        if (employeePrimaryPort.findByEmailAddress("administrator@consultio.de").isEmpty()) {
             Employee administrator = employeePrimaryPort.hire(new HireEmployeeCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@consultio.de", "Application administrator"));
             log.debug("created application administrator, id = {}", administrator.getId().value());
             employeePrimaryPort.assignToGroup(new AssignToGroupCommand(administrationGroup.getId(), administrator.getId()));
             log.debug("assigned application administrator to administration group {}", administrationGroup.getName());
-            return administrator;
-        });
+        }
     }
 
     private List<Permission> getOrCreatePermissions() {
