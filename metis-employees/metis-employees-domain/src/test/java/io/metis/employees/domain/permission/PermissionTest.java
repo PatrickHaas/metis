@@ -18,5 +18,6 @@ class PermissionTest {
         permission.initiate();
         assertThat(permission.getInitiatedAt()).isNotNull();
         assertThat(permission.getInitiatedAt().toLocalDate()).isEqualTo(LocalDate.now());
+        assertThat(permission.domainEvents()).containsExactly(new PermissionInitiated(permission.getId()));
     }
 }
