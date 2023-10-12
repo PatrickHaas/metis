@@ -1,7 +1,10 @@
 package io.metis.employees.domain.employee;
 
+import org.jmolecules.ddd.annotation.ValueObject;
+
 import java.time.LocalDate;
 
+@ValueObject
 public record HiredOn(LocalDate value) {
     public HiredOn {
         if (value == null) {

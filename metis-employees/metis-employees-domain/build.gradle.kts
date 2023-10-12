@@ -16,6 +16,7 @@ dependencies {
     compileOnly(libs.lombok)
 
     implementation(libs.jmolecules.ddd)
+    implementation(libs.jmolecules.events)
     implementation(libs.jmolecules.hexagonal.architecture)
 
     implementation(project(":metis-common:metis-common-domain"))

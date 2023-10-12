@@ -8,6 +8,7 @@ dependencyResolutionManagement {
             library("logback-core", "ch.qos.logback:logback-core:1.4.11")
 
             library("jmolecules-ddd", "org.jmolecules:jmolecules-ddd:1.7.0")
+            library("jmolecules-events", "org.jmolecules:jmolecules-events:1.7.0")
             library("jmolecules-hexagonal-architecture", "org.jmolecules:jmolecules-hexagonal-architecture:1.7.0")
 
             library("junit-jupiter-bom", "org.junit:junit-bom:5.9.1")
