@@ -51,4 +51,17 @@ class GroupFactoryTest {
         assertThat(group.getInitiatedAt()).isNull();
         assertThat(group.getAssignedPermissions()).isEmpty();
     }
+
+    @Test
+    void create_shouldPassAllParameters() {
+        GroupFactory factory = new GroupFactory();
+        UUID id = UUID.randomUUID();
+        LocalDateTime initiatedAt = LocalDateTime.now();
+        Group group = factory.create(id, "Group A", "Best group there is", initiatedAt);
+        assertThat(group.getId().value()).isEqualTo(id);
+        assertThat(group.getName().value()).isEqualTo("Group A");
+        assertThat(group.getDescription().value()).isEqualTo("Best group there is");
+        assertThat(group.getInitiatedAt()).isEqualTo(initiatedAt);
+        assertThat(group.getAssignedPermissions()).isEmpty();
+    }
 }

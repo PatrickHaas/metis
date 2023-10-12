@@ -11,7 +11,7 @@ class PermissionTest {
 
     @Test
     void initiateShouldSetInitiatedAtAndCreateDomainEvent() {
-        Permission permission = new Permission(new PermissionId(UUID.randomUUID()), new PermissionKey("key;a"), null);
+        Permission permission = new Permission(new PermissionId(UUID.randomUUID()), new PermissionKey("key;a"), null, null);
         assertThat(permission.getKey().value()).isEqualTo("key;a");
         assertThat(permission.getDescription()).isNull();
         assertThat(permission.getInitiatedAt()).isNull();
