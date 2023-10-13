@@ -3,6 +3,7 @@ package io.metis.employees.application.employee;
 import io.metis.common.domain.DomainEvent;
 import io.metis.common.domain.EventPublisher;
 import io.metis.common.domain.employee.EmployeeId;
+import io.metis.employees.domain.employee.EmailAddress;
 import io.metis.employees.domain.employee.Employee;
 import io.metis.employees.domain.employee.EmployeeFactory;
 import io.metis.employees.domain.employee.EmployeeRepository;
@@ -16,6 +17,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -35,7 +37,6 @@ class EmployeePrimaryPortTest {
 
     @BeforeEach
     void createPrimaryPort() {
-
         primaryPort = new EmployeePrimaryPort(employeeFactory, repository, eventPublisher);
     }
 
@@ -105,7 +106,54 @@ class EmployeePrimaryPortTest {
                 verify(eventPublisher).publish(domainEvent);
             }
         }
+    }
 
+    @Test
+    void existsById_shouldReturnTrue_whenEmployeeExists() {
+        EmployeeId employeeId = new EmployeeId(UUID.randomUUID());
+        when(repository.existsById(employeeId))
+                .thenReturn(true);
+        assertThat(primaryPort.existsById(employeeId)).isTrue();
+    }
+
+    @Test
+    void existsById_shouldReturnFalse_whenEmployeeDoesNotExist() {
+        EmployeeId employeeId = new EmployeeId(UUID.randomUUID());
+        when(repository.existsById(employeeId))
+                .thenReturn(false);
+        assertThat(primaryPort.existsById(employeeId)).isFalse();
+    }
+
+    @Test
+    void findAll_shouldReturnAllEmployees() {
+        Employee tony = employeeFactory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
+        Employee bruce = employeeFactory.create(UUID.randomUUID(), "Bruce", "Banner", LocalDate.of(1970, 5, 29), "bruce@avengers.com", "Hulk");
+        when(repository.findAll()).thenReturn(List.of(tony, bruce));
+        assertThat(primaryPort.findAll()).containsExactlyInAnyOrder(tony, bruce);
+    }
+
+    @Test
+    void deleteById_shouldDeleteById() {
+        EmployeeId employeeId = new EmployeeId(UUID.randomUUID());
+        doNothing().when(repository).deleteById(employeeId);
+        primaryPort.deleteById(employeeId);
+        verify(repository).deleteById(employeeId);
+    }
+
+    @Test
+    void findByGroupId_shouldFindAllEmployees_assignedToASpecificGroup() {
+        Employee tony = employeeFactory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
+        Employee bruce = employeeFactory.create(UUID.randomUUID(), "Bruce", "Banner", LocalDate.of(1970, 5, 29), "bruce@avengers.com", "Hulk");
+        GroupId groupId = new GroupId(UUID.randomUUID());
+        when(repository.findByGroupId(groupId)).thenReturn(List.of(tony, bruce));
+        assertThat(primaryPort.findByGroupId(groupId)).containsExactlyInAnyOrder(tony, bruce);
+    }
+
+    @Test
+    void findByEmailAddress_shouldFindAllEmployees_whenTheEmailMatches() {
+        Employee tony = employeeFactory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
+        when(repository.findByEmailAddress(new EmailAddress("tony@avengers.com"))).thenReturn(Optional.of(tony));
+        assertThat(primaryPort.findByEmailAddress("tony@avengers.com")).contains(tony);
     }
 
 }

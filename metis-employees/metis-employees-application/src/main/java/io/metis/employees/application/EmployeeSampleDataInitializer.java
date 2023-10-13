@@ -7,7 +7,6 @@ import io.metis.employees.application.employee.HireEmployeeCommand;
 import io.metis.employees.application.group.GroupPrimaryPort;
 import io.metis.employees.application.group.InitiateGroupCommand;
 import io.metis.employees.application.permission.PermissionPrimaryPort;
-import io.metis.employees.domain.employee.EmailAddress;
 import io.metis.employees.domain.employee.Employee;
 import io.metis.employees.domain.group.Group;
 import io.metis.employees.domain.permission.Permission;
@@ -58,7 +57,7 @@ public class EmployeeSampleDataInitializer implements SampleDataInitializer {
             log.debug("assigned missing permission {} to group {}", missingBackofficePermission.getKey(), backofficeGroup.getName());
         }
 
-        Employee ernst = employeePrimaryPort.findByEmail(new EmailAddress(EMAIL_ERNST_EMPLOYEE)).orElse(null);
+        Employee ernst = employeePrimaryPort.findByEmailAddress(EMAIL_ERNST_EMPLOYEE).orElse(null);
         if (ernst == null) {
             ernst = employeePrimaryPort.hire(new HireEmployeeCommand("Ernst", "Employee", LocalDate.of(1970, 5, 29), EMAIL_ERNST_EMPLOYEE, "Consultant"));
             log.debug("created ernst employee, id = {}", ernst.getId().value());
@@ -69,7 +68,7 @@ public class EmployeeSampleDataInitializer implements SampleDataInitializer {
             log.debug("assigned ernst employee to group {}", employeeGroup.getName());
         }
 
-        Employee berta = employeePrimaryPort.findByEmail(new EmailAddress(EMAIL_BERTA_EMPLOYEE)).orElse(null);
+        Employee berta = employeePrimaryPort.findByEmailAddress(EMAIL_BERTA_EMPLOYEE).orElse(null);
         if (berta == null) {
             berta = employeePrimaryPort.hire(new HireEmployeeCommand("Berta", "Backoffice", LocalDate.of(1970, 5, 29), EMAIL_BERTA_EMPLOYEE, "Backoffice operator"));
             log.debug("created berta employee, id = {}", berta.getId().value());

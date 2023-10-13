@@ -54,10 +54,6 @@ public class EmployeePrimaryPort implements ApplicationService {
         repository.deleteById(employeeId);
     }
 
-    public Optional<Employee> findByEmail(EmailAddress email) {
-        return repository.findByEmailAddress(email);
-    }
-
     public List<Employee> findByGroupId(GroupId groupId) {
         return repository.findByGroupId(groupId);
     }
