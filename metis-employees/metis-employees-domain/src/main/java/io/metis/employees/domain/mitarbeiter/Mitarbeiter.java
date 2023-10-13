@@ -28,7 +28,7 @@ public class Mitarbeiter extends AggregateRoot<MitarbeiterId> {
         this(id, vorname, nachname, geburtsdatum, null, emailAdresse, jobTitle, new HashSet<>());
     }
 
-    public void hire() {
+    public void einstellen() {
         einstelltAm = EinstelltAm.now();
         domainEvents().add(new MitarbeiterEingestellt(getId(), getEinstelltAm().value()));
     }
@@ -42,7 +42,7 @@ public class Mitarbeiter extends AggregateRoot<MitarbeiterId> {
         domainEvents().add(new MitarbeiterdatenAktualisiert(getId()));
     }
 
-    public void assignToGroup(GruppeId gruppeId) {
+    public void zuweisen(GruppeId gruppeId) {
         assignedGroups.add(gruppeId);
         domainEvents().add(new MitarbeiterEinerGruppeZugewiesen(getId(), gruppeId));
     }

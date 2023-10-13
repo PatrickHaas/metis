@@ -15,7 +15,7 @@ class BerechtigungTest {
         assertThat(berechtigung.getKey().value()).isEqualTo("key;a");
         assertThat(berechtigung.getDescription()).isNull();
         assertThat(berechtigung.getInitiatedAt()).isNull();
-        berechtigung.initiate();
+        berechtigung.initiieren();
         assertThat(berechtigung.getInitiatedAt()).isNotNull();
         assertThat(berechtigung.getInitiatedAt().toLocalDate()).isEqualTo(LocalDate.now());
         assertThat(berechtigung.domainEvents()).containsExactly(new BerechtigungInitiiert(berechtigung.getId()));

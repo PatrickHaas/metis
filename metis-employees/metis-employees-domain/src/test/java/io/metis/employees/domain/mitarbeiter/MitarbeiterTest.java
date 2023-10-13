@@ -19,7 +19,7 @@ class MitarbeiterTest {
     void hire_shouldSetHiredAtAndCreateDomainEvent() {
         MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
         Mitarbeiter mitarbeiter = new Mitarbeiter(mitarbeiterId, new Vorname("Tony"), new Nachname("Stark"), Geburtsdatum.of(1980, 5, 28), new EmailAdresse("tony@avengers.com"), "Icon-Man");
-        mitarbeiter.hire();
+        mitarbeiter.einstellen();
         assertThat(mitarbeiter.getEinstelltAm().value()).isEqualTo(LocalDate.now());
         assertThat(mitarbeiter.domainEvents()).containsExactly(new MitarbeiterEingestellt(mitarbeiterId, mitarbeiter.getEinstelltAm().value()));
     }
@@ -42,7 +42,7 @@ class MitarbeiterTest {
         MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
         Mitarbeiter mitarbeiter = new Mitarbeiter(mitarbeiterId, new Vorname("Tony"), new Nachname("Stark"), Geburtsdatum.of(1980, 5, 28), EinstelltAm.now(), new EmailAdresse("tony@avengers.com"), "Iron-Man", new HashSet<>());
         GruppeId gruppeId = new GruppeId(UUID.randomUUID());
-        mitarbeiter.assignToGroup(gruppeId);
+        mitarbeiter.zuweisen(gruppeId);
         assertThat(mitarbeiter.domainEvents()).containsExactly(new MitarbeiterEinerGruppeZugewiesen(mitarbeiterId, gruppeId));
     }
 

@@ -32,13 +32,13 @@ class GruppePrimaryPortTest {
     private GruppeFactory factory;
 
     @InjectMocks
-    private GroupPrimaryPort primaryPort;
+    private GruppenService primaryPort;
 
     @Test
     void initiate_shouldSaveAndPublish() {
         when(repository.findByName("CH-1")).thenReturn(Optional.empty());
         when(repository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        Gruppe gruppe = primaryPort.initiate(new InitiateGroupCommand("CH-1", "Chapter 1 is the best"));
+        Gruppe gruppe = primaryPort.initiiere(new InitiiereGruppeCommand("CH-1", "Chapter 1 is the best"));
         assertThat(gruppe.getId()).isNotNull();
         assertThat(gruppe.getName().value()).isEqualTo("CH-1");
         assertThat(gruppe.getDescription().value()).isEqualTo("Chapter 1 is the best");
@@ -55,8 +55,8 @@ class GruppePrimaryPortTest {
     void initiate_shouldRaiseException_whenGroupNameIsAlreadyTaken() {
         when(repository.findByName("CH-1")).thenReturn(Optional.of(new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname("CH-1"), new Gruppenbeschreibung("Chapter 1 is the best"),
                 LocalDateTime.now())));
-        assertThatThrownBy(() -> primaryPort.initiate(new InitiateGroupCommand("CH-1", "Chapter 1")))
-                .isInstanceOf(GroupNameAlreadyTakenException.class);
+        assertThatThrownBy(() -> primaryPort.initiiere(new InitiiereGruppeCommand("CH-1", "Chapter 1")))
+                .isInstanceOf(GruppennameAlreadyTakenException.class);
 
         verifyNoInteractions(eventPublisher);
     }
@@ -91,7 +91,7 @@ class GruppePrimaryPortTest {
         when(repository.findById(gruppeId)).thenReturn(Optional.of(gruppe));
 
         BerechtigungId berechtigungId = new BerechtigungId(UUID.randomUUID());
-        primaryPort.assignPermission(gruppeId, berechtigungId);
+        primaryPort.weiseBerechtigungZu(gruppeId, berechtigungId);
 
         assertThat(gruppe.getAssignedPermissions()).containsExactly(berechtigungId);
 

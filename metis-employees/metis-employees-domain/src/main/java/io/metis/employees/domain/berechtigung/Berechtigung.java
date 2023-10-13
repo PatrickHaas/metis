@@ -23,7 +23,7 @@ public class Berechtigung extends AggregateRoot<BerechtigungId> {
         this.description = description;
     }
 
-    public void initiate() {
+    public void initiieren() {
         initiatedAt = LocalDateTime.now();
         domainEvents().add(new BerechtigungInitiiert(getId()));
     }

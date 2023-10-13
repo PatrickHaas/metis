@@ -11,29 +11,31 @@ import org.jmolecules.architecture.hexagonal.PrimaryPort;
 import java.util.List;
 import java.util.Optional;
 
-@PrimaryPort
 @RequiredArgsConstructor
-public class PermissionPrimaryPort implements ApplicationService {
+class BerechtigungService implements ApplicationService, BerechtigungPrimaryPort {
     private final BerechtigungRepository repository;
     private final EventPublisher eventPublisher;
     private final BerechtigungFactory factory;
 
-    public Berechtigung initiate(InitiatePermissionCommand command) {
+    @Override
+    public Berechtigung initiiere(InitiiereBerechtigungCommand command) {
         Optional<Berechtigung> existingPermissionByKey = repository.findByKey(command.key());
         if (existingPermissionByKey.isPresent()) {
-            throw new PermissionKeyAlreadyTakenException(command.key());
+            throw new BerechtigungsschluesselAlreadyTakenException(command.key());
         }
 
         Berechtigung berechtigung = factory.create(command.key(), command.description());
-        berechtigung.initiate();
+        berechtigung.initiieren();
         return saveAndPublish(berechtigung, repository, eventPublisher);
     }
 
+    @Override
     public List<Berechtigung> findAll() {
         return repository.findAll();
     }
 
+    @Override
     public Berechtigung findByKey(String key) {
-        return repository.findByKey(key).orElseThrow(() -> new PermissionNotFoundException(key));
+        return repository.findByKey(key).orElseThrow(() -> new BerechtigungNotFoundException(key));
     }
 }
