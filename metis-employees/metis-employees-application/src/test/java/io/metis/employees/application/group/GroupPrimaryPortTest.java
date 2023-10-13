@@ -3,6 +3,7 @@ package io.metis.employees.application.group;
 import io.metis.common.domain.DomainEvent;
 import io.metis.common.domain.EventPublisher;
 import io.metis.employees.domain.group.*;
+import io.metis.employees.domain.permission.PermissionId;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -59,5 +61,44 @@ class GroupPrimaryPortTest {
         verifyNoInteractions(eventPublisher);
     }
 
+    @Test
+    void findByName() {
+        Group group = new Group(new GroupId(UUID.randomUUID()), new GroupName("Chapter 1"), null, LocalDateTime.now());
+        when(repository.findByName("Chapter 1")).thenReturn(Optional.of(group));
+        assertThat(primaryPort.findByName("Chapter 1")).contains(group);
+    }
+
+    @Test
+    void findById() {
+        GroupId groupId = new GroupId(UUID.randomUUID());
+        Group group = new Group(groupId, new GroupName("Chapter 1"), null, LocalDateTime.now());
+        when(repository.findById(groupId)).thenReturn(Optional.of(group));
+        assertThat(primaryPort.findById(groupId)).isEqualTo(group);
+    }
+
+    @Test
+    void findAll() {
+        Group chapter1 = new Group(new GroupId(UUID.randomUUID()), new GroupName("Chapter 1"), null, LocalDateTime.now());
+        Group chapter2 = new Group(new GroupId(UUID.randomUUID()), new GroupName("Chapter 2"), null, LocalDateTime.now());
+        when(repository.findAll()).thenReturn(List.of(chapter2, chapter1));
+        assertThat(primaryPort.findAll()).containsExactlyInAnyOrder(chapter1, chapter2);
+    }
+
+    @Test
+    void assignPermission_shouldAssignPermissionToGroupSaveAndPublish() {
+        GroupId groupId = new GroupId(UUID.randomUUID());
+        Group group = new Group(groupId, new GroupName("Chapter 1"), null, LocalDateTime.now());
+        when(repository.findById(groupId)).thenReturn(Optional.of(group));
+
+        PermissionId permissionId = new PermissionId(UUID.randomUUID());
+        primaryPort.assignPermission(groupId, permissionId);
+
+        assertThat(group.getAssignedPermissions()).containsExactly(permissionId);
+
+        verify(repository).save(group);
+        for (DomainEvent domainEvent : group.domainEvents()) {
+            verify(eventPublisher).publish(domainEvent);
+        }
+    }
 
 }
