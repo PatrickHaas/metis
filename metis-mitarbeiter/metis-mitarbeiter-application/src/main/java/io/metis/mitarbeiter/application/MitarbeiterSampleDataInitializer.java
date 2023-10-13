@@ -1,6 +1,6 @@
 package io.metis.mitarbeiter.application;
 
-import io.metis.common.application.SampleDataInitializer;
+import io.metis.common.application.ModuleInitializer;
 import io.metis.mitarbeiter.application.berechtigung.BerechtigungPrimaryPort;
 import io.metis.mitarbeiter.application.gruppe.GruppePrimaryPort;
 import io.metis.mitarbeiter.application.gruppe.InitiiereGruppeCommand;
@@ -15,10 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
-public class MitarbeiterSampleDataInitializer implements SampleDataInitializer {
+public class MitarbeiterSampleDataInitializer implements ModuleInitializer {
 
     public static final String EMPLOYEE_GROUP_NAME = "employee";
     public static final String BACKOFFICE_GROUP_NAME = "backoffice";
@@ -86,5 +87,10 @@ public class MitarbeiterSampleDataInitializer implements SampleDataInitializer {
             backofficeGruppe = gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(BACKOFFICE_GROUP_NAME, "a group containing all operative backoffice employees"));
         }
         return backofficeGruppe;
+    }
+
+    @Override
+    public Set<Class<? extends ModuleInitializer>> getDependencies() {
+        return Set.of(MitarbeiterModuleInitializer.class);
     }
 }
