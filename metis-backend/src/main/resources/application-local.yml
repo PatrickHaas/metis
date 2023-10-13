@@ -1,0 +1,29 @@
+server:
+  port: 8081
+
+logging:
+  level:
+    io.metis: debug
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+
+  mail:
+    host: localhost
+    port: 1025
+    username: info@consultio.de
+    password: null
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/consultio
+
+keycloak:
+  url: http://localhost:8080
+  username: admin
+  password: Pa55w0rd

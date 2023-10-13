@@ -2,7 +2,6 @@ plugins {
     id("java")
     id("org.springframework.boot") version "3.1.3"
     id("io.spring.dependency-management") version "1.1.3"
-    id("org.liquibase.gradle") version "2.0.4"
     jacoco
     id("org.sonarqube") version "4.4.1.3373"
 }
@@ -25,10 +24,6 @@ dependencies {
 
     implementation(project(":metis-common:metis-common-domain"))
     implementation(project(":metis-common:metis-common-application"))
-
-    implementation("org.liquibase:liquibase-core")
-
-    implementation("org.instancio:instancio-core:3.2.0")
 
     implementation("org.reflections:reflections:0.10.2")
 

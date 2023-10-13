@@ -1,0 +1,16 @@
+spring:
+  liquibase:
+    change-log: db/changelog/master.yml
+
+keycloak:
+  realm: metis
+  user-creation-actions:
+    - VERIFY_EMAIL
+    - UPDATE_PASSWORD
+
+modules:
+  initialize: true
+
+time:
+  working-days: [ MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY ]
+  target-time-per-day: 8h

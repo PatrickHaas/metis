@@ -21,6 +21,8 @@ dependencyResolutionManagement {
     }
 }
 
+include("metis-backend")
+
 include("metis-common:metis-common-domain")
 include("metis-common:metis-common-application")
 include("metis-common:metis-common-adapters")

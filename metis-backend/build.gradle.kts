@@ -17,9 +17,6 @@ dependencies {
     annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
 
-    implementation(libs.jmolecules.ddd)
-    implementation(libs.jmolecules.hexagonal.architecture)
-
     implementation(libs.logback.core)
 
     implementation(project(":metis-common:metis-common-domain"))
@@ -28,8 +25,7 @@ dependencies {
 
     implementation(project(":metis-employees:metis-employees-domain"))
     implementation(project(":metis-employees:metis-employees-application"))
-
-    implementation("org.instancio:instancio-core:3.2.0")
+    implementation(project(":metis-employees:metis-employees-adapters"))
 
     implementation("org.reflections:reflections:0.10.2")
 
