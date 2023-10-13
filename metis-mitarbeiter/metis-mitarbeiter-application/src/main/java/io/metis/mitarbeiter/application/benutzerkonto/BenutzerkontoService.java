@@ -17,15 +17,15 @@ class BenutzerkontoService implements ApplicationService, BenutzerkontoPrimaryPo
     public BenutzerkontoService(BenutzerkontoRepository repository, MitarbeiterPrimaryPort mitarbeiterPrimaryPort, EventHandlerRegistry eventHandlerRegistry) {
         this.repository = repository;
         this.mitarbeiterPrimaryPort = mitarbeiterPrimaryPort;
-        eventHandlerRegistry.subscribe(MitarbeiterEingestellt.class, this::createUser);
-        eventHandlerRegistry.subscribe(MitarbeiterEinerGruppeZugewiesen.class, this::assignRoleToUser);
+        eventHandlerRegistry.subscribe(MitarbeiterEingestellt.class, this::erstelleBenutzerkonto);
+        eventHandlerRegistry.subscribe(MitarbeiterEinerGruppeZugewiesen.class, this::weiseBenutzerRolleZu);
     }
 
-    void assignRoleToUser(MitarbeiterEinerGruppeZugewiesen event) {
+    void weiseBenutzerRolleZu(MitarbeiterEinerGruppeZugewiesen event) {
         repository.assignGroupByEmployeeId(event.mitarbeiterId(), event.gruppeId());
     }
 
-    void createUser(MitarbeiterEingestellt mitarbeiterEingestelltEvent) {
+    void erstelleBenutzerkonto(MitarbeiterEingestellt mitarbeiterEingestelltEvent) {
         Mitarbeiter mitarbeiter = this.mitarbeiterPrimaryPort.getById(mitarbeiterEingestelltEvent.id());
         repository.save(new Benutzerkonto(null, mitarbeiterEingestelltEvent.id(), mitarbeiter.getVorname().value(), mitarbeiter.getNachname().value(), mitarbeiter.getEmailAdresse().value()));
     }
