@@ -33,7 +33,7 @@ class GruppeService implements ApplicationService, GruppePrimaryPort {
 
     @Override
     public void weiseBerechtigungZu(GruppeId gruppeId, Berechtigungsschluessel berechtigungsschluessel) {
-        Gruppe gruppe = findById(gruppeId);
+        Gruppe gruppe = getById(gruppeId);
         gruppe.weiseZu(berechtigungsschluessel);
         saveAndPublish(gruppe, repository, eventPublisher);
     }
@@ -44,7 +44,7 @@ class GruppeService implements ApplicationService, GruppePrimaryPort {
     }
 
     @Override
-    public Gruppe findById(GruppeId id) {
+    public Gruppe getById(GruppeId id) {
         return repository.findById(id).orElseThrow(() -> new GruppeNotFoundException(id));
     }
 

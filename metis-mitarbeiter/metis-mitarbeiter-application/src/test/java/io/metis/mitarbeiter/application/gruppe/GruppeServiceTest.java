@@ -69,11 +69,19 @@ class GruppeServiceTest {
     }
 
     @Test
-    void findById() {
+    void getById() {
         GruppeId gruppeId = new GruppeId(UUID.randomUUID());
         Gruppe gruppe = new Gruppe(gruppeId, new Gruppenname("Chapter 1"), null, LocalDateTime.now());
         when(repository.findById(gruppeId)).thenReturn(Optional.of(gruppe));
-        assertThat(service.findById(gruppeId)).isEqualTo(gruppe);
+        assertThat(service.getById(gruppeId)).isEqualTo(gruppe);
+    }
+
+    @Test
+    void getById_wirftException_wennKeineGruppeGefundenWurde() {
+        GruppeId gruppeId = new GruppeId(UUID.randomUUID());
+        when(repository.findById(gruppeId)).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> service.getById(gruppeId))
+                .isInstanceOf(GruppeNotFoundException.class);
     }
 
     @Test

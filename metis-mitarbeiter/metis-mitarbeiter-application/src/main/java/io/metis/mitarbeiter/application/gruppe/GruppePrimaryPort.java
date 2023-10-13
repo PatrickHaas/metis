@@ -24,7 +24,7 @@ public interface GruppePrimaryPort {
 
     List<Gruppe> findAll();
 
-    Gruppe findById(GruppeId id);
+    Gruppe getById(GruppeId id);
 
     Optional<Gruppe> findByName(String name);
 }
