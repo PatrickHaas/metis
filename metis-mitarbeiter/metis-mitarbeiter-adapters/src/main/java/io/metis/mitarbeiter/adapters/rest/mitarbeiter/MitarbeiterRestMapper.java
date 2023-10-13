@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-class MitarbeiterMapper {
+class MitarbeiterRestMapper {
 
     private final MitarbeiterFactory mitarbeiterFactory;
 
