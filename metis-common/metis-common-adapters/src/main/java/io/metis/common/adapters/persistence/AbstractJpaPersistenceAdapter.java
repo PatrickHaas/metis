@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-public abstract class AbstractJpaRepository<R extends JpaRepository<E, EID>, T extends AggregateRoot<ID>, ID, E, EID> implements Repository<T, ID> {
+public abstract class AbstractJpaPersistenceAdapter<R extends JpaRepository<E, EID>, T extends AggregateRoot<ID>, ID, E, EID> implements Repository<T, ID> {
 
     @Getter(AccessLevel.PROTECTED)
     private final R springRepository;

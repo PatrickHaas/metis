@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class AbstractInMemoryRepository<T extends AggregateRoot<ID>, ID> implements Repository<T, ID> {
+public class AbstractInMemoryPersistenceAdapter<T extends AggregateRoot<ID>, ID> implements Repository<T, ID> {
 
     private final Map<ID, T> cache = new HashMap<>();
 
