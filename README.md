@@ -86,6 +86,10 @@ wird.
 Eine Möglichkeit diesen Nachteil anzugehen, wäre eine Klasse <i>Vorname</i> einzuführen, die nicht nur den Wert, sondern
 auch die Geschäftsregeln im Bezug auf einen Vornamen beinhaltet und auch durchsetzt.
 
+## Factories
+
+## Services
+
 # Application
 
 # Adapters
