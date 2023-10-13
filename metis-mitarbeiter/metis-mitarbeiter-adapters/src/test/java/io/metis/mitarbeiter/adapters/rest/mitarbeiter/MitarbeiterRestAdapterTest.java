@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.metis.common.adapters.CommonConfiguration;
 import io.metis.common.adapters.rest.CommonExceptionHandler;
 import io.metis.common.adapters.security.SecurityConfiguration;
+import io.metis.common.domain.mitarbeiter.MitarbeiterId;
+import io.metis.mitarbeiter.application.mitarbeiter.MitarbeiterNotFoundException;
 import io.metis.mitarbeiter.application.mitarbeiter.MitarbeiterPrimaryPort;
 import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterFactory;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -70,7 +72,7 @@ class MitarbeiterRestAdapterTest {
         tony.einstellen();
         Mitarbeiter bruce = factory.create(UUID.randomUUID(), "Bruce", "Banner", LocalDate.of(1970, 5, 29), "bruce@avengers.com", "Hulk");
         bruce.einstellen();
-        Mockito.when(primaryPort.findAll()).thenReturn(List.of(tony, bruce));
+        when(primaryPort.findAll()).thenReturn(List.of(tony, bruce));
         List<MitarbeiterMessage> mitarbeiterMessages = objectMapper.readValue(mockMvc.perform(get("/rest/v1/mitarbeiter")
                         .with(csrf())
                         .with(jwt().authorities(new SimpleGrantedAuthority("employees:employees:list"))))
@@ -82,6 +84,44 @@ class MitarbeiterRestAdapterTest {
                 MitarbeiterMessage.from(tony),
                 MitarbeiterMessage.from(bruce)
         );
+    }
+
+    @Test
+    void find_shouldReturnUnauthorized_whenNoAuthCouldBeFound() throws Exception {
+        mockMvc.perform(get("/rest/v1/mitarbeiter/{id}", UUID.randomUUID()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void find_shouldReturnForbidden_whenAuthorityIsMissing() throws Exception {
+        mockMvc.perform(get("/rest/v1/mitarbeiter/{id}", UUID.randomUUID())
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void find_shouldReturnNotFound_whenEmployeeCouldNotBeFound() throws Exception {
+        MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
+        when(primaryPort.getById(mitarbeiterId)).thenThrow(new MitarbeiterNotFoundException(mitarbeiterId));
+        mockMvc.perform(get("/rest/v1/mitarbeiter/{id}", mitarbeiterId.value())
+                        .with(csrf())
+                        .with(jwt().authorities(new SimpleGrantedAuthority("employees:employees:show"))))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void find_shouldReturnEmployee() throws Exception {
+        MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
+        Mitarbeiter tony = factory.create(mitarbeiterId.value(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
+        tony.einstellen();
+        when(primaryPort.getById(mitarbeiterId)).thenReturn(tony);
+        MitarbeiterMessage mitarbeiterMessage = objectMapper.readValue(mockMvc.perform(get("/rest/v1/mitarbeiter/{id}", mitarbeiterId.value())
+                        .with(csrf())
+                        .with(jwt().authorities(new SimpleGrantedAuthority("employees:employees:show"))))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), MitarbeiterMessage.class);
+        assertThat(mitarbeiterMessage).isEqualTo(MitarbeiterMessage.from(tony));
     }
 
 }

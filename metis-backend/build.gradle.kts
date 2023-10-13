@@ -23,7 +23,6 @@ dependencies {
     implementation(project(":metis-common:metis-common-application"))
     implementation(project(":metis-common:metis-common-adapters"))
     implementation(project(":metis-mitarbeiter:metis-mitarbeiter-domain"))
-
     implementation(project(":metis-mitarbeiter:metis-mitarbeiter-application"))
     implementation(project(":metis-mitarbeiter:metis-mitarbeiter-adapters"))
 
