@@ -1,4 +1,4 @@
-package io.metis.mitarbeiter.adapters.rest.employee;
+package io.metis.mitarbeiter.adapters.rest.mitarbeiter;
 
 
 import io.metis.common.domain.mitarbeiter.MitarbeiterId;
@@ -19,43 +19,43 @@ import java.util.UUID;
 @Validated
 @PrimaryAdapter
 @RestController
-@RequestMapping("rest/v1/employees")
+@RequestMapping("rest/v1/mitarbeiter")
 @RequiredArgsConstructor
-class EmployeesRestAdapter {
+class MitarbeiterRestAdapter {
 
     private final MitarbeiterPrimaryPort primaryPort;
-    private final RestEmployeeMapper mapper;
+    private final MitarbeiterMapper mapper;
 
     @GetMapping
-    List<EmployeeMessage> findAll() {
+    List<MitarbeiterMessage> findAll() {
         return primaryPort.findAll().stream()
                 .map(mapper::to)
                 .toList();
     }
 
     @GetMapping("{id}")
-    EmployeeMessage find(@PathVariable("id") UUID id) {
+    MitarbeiterMessage find(@PathVariable("id") UUID id) {
         return mapper.to(primaryPort.getById(new MitarbeiterId(id)));
     }
 
     @PostMapping
-    EmployeeMessage hire(@RequestBody @Valid HireEmployeeMessage message) {
-        StelleMitarbeiterEinCommand command = new StelleMitarbeiterEinCommand(message.firstName(), message.lastName(), message.dateOfBirth(), message.emailAddress(), message.jobTitle());
+    MitarbeiterMessage einstellen(@RequestBody @Valid StelleMitarbeiterEinMessage message) {
+        StelleMitarbeiterEinCommand command = new StelleMitarbeiterEinCommand(message.vorname(), message.nachname(), message.geburtsdatum(), message.emailAdresse(), message.jobTitel());
         return mapper.to(primaryPort.stelleEin(command));
     }
 
     @PutMapping("{id}")
-    EmployeeMessage update(@PathVariable("id") UUID id, @RequestBody @Valid HireEmployeeMessage message) {
-        return mapper.to(primaryPort.aktualisiereDaten(new AktualisiereMitarbeiterdatenCommand(new MitarbeiterId(id), message.firstName(), message.lastName(), message.dateOfBirth(), message.emailAddress(), message.jobTitle())));
+    MitarbeiterMessage aktualisiereMitarbeiterdaten(@PathVariable("id") UUID id, @RequestBody @Valid StelleMitarbeiterEinMessage message) {
+        return mapper.to(primaryPort.aktualisiereDaten(new AktualisiereMitarbeiterdatenCommand(new MitarbeiterId(id), message.vorname(), message.nachname(), message.geburtsdatum(), message.emailAdresse(), message.jobTitel())));
     }
 
     @DeleteMapping("{id}")
-    void delete(@PathVariable("id") UUID id) {
+    void deleteById(@PathVariable("id") UUID id) {
         primaryPort.deleteById(new MitarbeiterId(id));
     }
 
-    @PostMapping("{id}/assigned-groups")
-    EmployeeMessage assignToGroup(@PathVariable("id") UUID id, @RequestBody @Valid AssignToGroupMessage message) {
+    @PostMapping("{id}/zugewiesene-gruppen")
+    MitarbeiterMessage weiseGruppeZu(@PathVariable("id") UUID id, @RequestBody @Valid WeiseMitarbeiterEinerGruppeZuMessage message) {
         return mapper.to(primaryPort.weiseGruppeZu(new MitarbeiterEinerGruppeZuweisenCommand(new GruppeId(message.groupId()), new MitarbeiterId(id))));
     }
 }

@@ -1,4 +1,4 @@
-package io.metis.mitarbeiter.adapters.persistence.employee;
+package io.metis.mitarbeiter.adapters.persistence.mitarbeiter;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-class EmployeeEntity {
+class MitarbeiterEntity {
     @Id
     private UUID id;
     private String firstName;

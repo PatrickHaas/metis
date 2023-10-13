@@ -1,4 +1,4 @@
-package io.metis.mitarbeiter.adapters.rest.employee;
+package io.metis.mitarbeiter.adapters.rest.mitarbeiter;
 
 import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterFactory;
@@ -10,16 +10,16 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-class RestEmployeeMapper {
+class MitarbeiterMapper {
 
     private final MitarbeiterFactory mitarbeiterFactory;
 
-    Mitarbeiter from(EmployeeMessage message) {
+    Mitarbeiter from(MitarbeiterMessage message) {
         return mitarbeiterFactory.create(message.id(), message.firstName(), message.lastName(), message.dateOfBirth(), message.hiredOn(), message.emailAddress(), message.jobTitle(), message.assignedGroups());
     }
 
-    EmployeeMessage to(Mitarbeiter mitarbeiter) {
-        return EmployeeMessage.builder()
+    MitarbeiterMessage to(Mitarbeiter mitarbeiter) {
+        return MitarbeiterMessage.builder()
                 .id(mitarbeiter.getId().value())
                 .firstName(mitarbeiter.getVorname().value())
                 .lastName(mitarbeiter.getNachname().value())

@@ -1,8 +1,8 @@
-package io.metis.mitarbeiter.adapters.persistence.employee;
+package io.metis.mitarbeiter.adapters.persistence.mitarbeiter;
 
+import io.metis.mitarbeiter.domain.gruppe.GruppeId;
 import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterFactory;
-import io.metis.mitarbeiter.domain.gruppe.GruppeId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,16 +10,16 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-class JpaEmployeeMapper {
+class MitarbeiterMapper {
 
     private final MitarbeiterFactory mitarbeiterFactory;
 
-    Mitarbeiter from(EmployeeEntity entity) {
+    Mitarbeiter from(MitarbeiterEntity entity) {
         return mitarbeiterFactory.create(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getDateOfBirth(), entity.getHiredOn(), entity.getEmailAddress(), entity.getJobTitle(), entity.getAssignedGroups());
     }
 
-    EmployeeEntity to(Mitarbeiter mitarbeiter) {
-        return EmployeeEntity.builder()
+    MitarbeiterEntity to(Mitarbeiter mitarbeiter) {
+        return MitarbeiterEntity.builder()
                 .id(mitarbeiter.getId().value())
                 .firstName(mitarbeiter.getVorname().value())
                 .lastName(mitarbeiter.getNachname().value())
