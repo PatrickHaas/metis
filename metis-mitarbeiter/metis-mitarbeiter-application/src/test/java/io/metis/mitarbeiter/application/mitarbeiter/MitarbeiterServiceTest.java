@@ -26,18 +26,18 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class MitarbeiterPrimaryPortTest {
-    private final MitarbeiterFactory mitarbeiterFactory = new MitarbeiterFactory();
+class MitarbeiterServiceTest {
+    private final MitarbeiterFactory factory = new MitarbeiterFactory();
     @Mock
     private MitarbeiterRepository repository;
     @Mock
     private EventPublisher eventPublisher;
 
-    private MitarbeiterService primaryPort;
+    private MitarbeiterService service;
 
     @BeforeEach
     void createPrimaryPort() {
-        primaryPort = new MitarbeiterService(mitarbeiterFactory, repository, eventPublisher);
+        service = new MitarbeiterService(factory, repository, eventPublisher);
     }
 
     @Nested
@@ -45,12 +45,12 @@ class MitarbeiterPrimaryPortTest {
         @Test
         void hire_shouldHireAndSaveEmployee() {
             when(repository.save(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
-            Mitarbeiter hiredMitarbeiter = primaryPort.stelleEin(new StelleMitarbeiterEinCommand("Tony", "Stark", LocalDate.of(1980, 5, 28), "tony@avengers.com", "Engineer"));
+            Mitarbeiter hiredMitarbeiter = service.stelleEin(new StelleMitarbeiterEinCommand("Tony", "Stark", LocalDate.of(1980, 5, 28), "tony@avengers.com", "Engineer"));
             assertThat(hiredMitarbeiter.getId()).isNotNull();
             assertThat(hiredMitarbeiter.getVorname().value()).isEqualTo("Tony");
             assertThat(hiredMitarbeiter.getNachname().value()).isEqualTo("Stark");
             assertThat(hiredMitarbeiter.getGeburtsdatum().value()).isEqualTo(LocalDate.of(1980, 5, 28));
-            assertThat(hiredMitarbeiter.getJobTitle()).isEqualTo("Engineer");
+            assertThat(hiredMitarbeiter.getJobTitel()).isEqualTo("Engineer");
 
             for (DomainEvent domainEvent : hiredMitarbeiter.domainEvents()) {
                 verify(eventPublisher).publish(domainEvent);
@@ -64,15 +64,15 @@ class MitarbeiterPrimaryPortTest {
         void update_shouldUpdateAndSaveEmployee() {
             MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
             when(repository.findById(mitarbeiterId))
-                    .thenReturn(Optional.of(mitarbeiterFactory.create(mitarbeiterId.value(), "Steve", "Rogers", LocalDate.of(1918, 7, 4), "steve@avengers.com", "Captain America")));
+                    .thenReturn(Optional.of(factory.create(mitarbeiterId.value(), "Steve", "Rogers", LocalDate.of(1918, 7, 4), "steve@avengers.com", "Captain America")));
             when(repository.save(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
-            Mitarbeiter updatedMitarbeiter = primaryPort.aktualisiereDaten(new AktualisiereMitarbeiterdatenCommand(mitarbeiterId, "Tony", "Stark", LocalDate.of(1980, 5, 28), "tony@avengers.com", "Iron-Man"));
+            Mitarbeiter updatedMitarbeiter = service.aktualisiereDaten(new AktualisiereMitarbeiterdatenCommand(mitarbeiterId, "Tony", "Stark", LocalDate.of(1980, 5, 28), "tony@avengers.com", "Iron-Man"));
             assertThat(updatedMitarbeiter.getId()).isNotNull();
             assertThat(updatedMitarbeiter.getVorname().value()).isEqualTo("Tony");
             assertThat(updatedMitarbeiter.getNachname().value()).isEqualTo("Stark");
             assertThat(updatedMitarbeiter.getGeburtsdatum().value()).isEqualTo(LocalDate.of(1980, 5, 28));
             assertThat(updatedMitarbeiter.getEmailAdresse().value()).isEqualTo("tony@avengers.com");
-            assertThat(updatedMitarbeiter.getJobTitle()).isEqualTo("Iron-Man");
+            assertThat(updatedMitarbeiter.getJobTitel()).isEqualTo("Iron-Man");
 
             for (DomainEvent domainEvent : updatedMitarbeiter.domainEvents()) {
                 verify(eventPublisher).publish(domainEvent);
@@ -84,7 +84,7 @@ class MitarbeiterPrimaryPortTest {
             MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
             when(repository.findById(mitarbeiterId))
                     .thenReturn(Optional.empty());
-            assertThatThrownBy(() -> primaryPort.aktualisiereDaten(new AktualisiereMitarbeiterdatenCommand(mitarbeiterId, "Tony", "Stark", LocalDate.of(1980, 5, 28), "tony@avengers.com", "Engineer")))
+            assertThatThrownBy(() -> service.aktualisiereDaten(new AktualisiereMitarbeiterdatenCommand(mitarbeiterId, "Tony", "Stark", LocalDate.of(1980, 5, 28), "tony@avengers.com", "Engineer")))
                     .isInstanceOf(MitarbeiterNotFoundException.class);
             verifyNoInteractions(eventPublisher);
         }
@@ -96,12 +96,12 @@ class MitarbeiterPrimaryPortTest {
         @Test
         void assignToGroup_shouldAssignSaveAndPublish() {
             MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
-            when(repository.findById(mitarbeiterId)).thenReturn(Optional.of(mitarbeiterFactory.create(mitarbeiterId.value(), "Tony", "Stark", LocalDate.of(1970, 5, 28), "tony@avengers.com", "Iron-Man")));
+            when(repository.findById(mitarbeiterId)).thenReturn(Optional.of(factory.create(mitarbeiterId.value(), "Tony", "Stark", LocalDate.of(1970, 5, 28), "tony@avengers.com", "Iron-Man")));
             when(repository.save(Mockito.any())).thenAnswer(invocation -> invocation.getArgument(0));
 
             GruppeId gruppeId = new GruppeId(UUID.randomUUID());
-            Mitarbeiter updatedMitarbeiter = primaryPort.weiseGruppeZu(new MitarbeiterEinerGruppeZuweisenCommand(gruppeId, mitarbeiterId));
-            assertThat(updatedMitarbeiter.getAssignedGroups()).containsExactly(gruppeId);
+            Mitarbeiter updatedMitarbeiter = service.weiseGruppeZu(new MitarbeiterEinerGruppeZuweisenCommand(gruppeId, mitarbeiterId));
+            assertThat(updatedMitarbeiter.getZugewieseneGruppen()).containsExactly(gruppeId);
             for (DomainEvent domainEvent : updatedMitarbeiter.domainEvents()) {
                 verify(eventPublisher).publish(domainEvent);
             }
@@ -113,7 +113,7 @@ class MitarbeiterPrimaryPortTest {
         MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
         when(repository.existsById(mitarbeiterId))
                 .thenReturn(true);
-        assertThat(primaryPort.existsById(mitarbeiterId)).isTrue();
+        assertThat(service.existsById(mitarbeiterId)).isTrue();
     }
 
     @Test
@@ -121,39 +121,39 @@ class MitarbeiterPrimaryPortTest {
         MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
         when(repository.existsById(mitarbeiterId))
                 .thenReturn(false);
-        assertThat(primaryPort.existsById(mitarbeiterId)).isFalse();
+        assertThat(service.existsById(mitarbeiterId)).isFalse();
     }
 
     @Test
     void findAll_shouldReturnAllEmployees() {
-        Mitarbeiter tony = mitarbeiterFactory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
-        Mitarbeiter bruce = mitarbeiterFactory.create(UUID.randomUUID(), "Bruce", "Banner", LocalDate.of(1970, 5, 29), "bruce@avengers.com", "Hulk");
+        Mitarbeiter tony = factory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
+        Mitarbeiter bruce = factory.create(UUID.randomUUID(), "Bruce", "Banner", LocalDate.of(1970, 5, 29), "bruce@avengers.com", "Hulk");
         when(repository.findAll()).thenReturn(List.of(tony, bruce));
-        assertThat(primaryPort.findAll()).containsExactlyInAnyOrder(tony, bruce);
+        assertThat(service.findAll()).containsExactlyInAnyOrder(tony, bruce);
     }
 
     @Test
     void deleteById_shouldDeleteById() {
         MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
         doNothing().when(repository).deleteById(mitarbeiterId);
-        primaryPort.deleteById(mitarbeiterId);
+        service.deleteById(mitarbeiterId);
         verify(repository).deleteById(mitarbeiterId);
     }
 
     @Test
     void findByGroupId_shouldFindAllEmployees_assignedToASpecificGroup() {
-        Mitarbeiter tony = mitarbeiterFactory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
-        Mitarbeiter bruce = mitarbeiterFactory.create(UUID.randomUUID(), "Bruce", "Banner", LocalDate.of(1970, 5, 29), "bruce@avengers.com", "Hulk");
+        Mitarbeiter tony = factory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
+        Mitarbeiter bruce = factory.create(UUID.randomUUID(), "Bruce", "Banner", LocalDate.of(1970, 5, 29), "bruce@avengers.com", "Hulk");
         GruppeId gruppeId = new GruppeId(UUID.randomUUID());
         when(repository.findByGroupId(gruppeId)).thenReturn(List.of(tony, bruce));
-        assertThat(primaryPort.findByGroupId(gruppeId)).containsExactlyInAnyOrder(tony, bruce);
+        assertThat(service.findByGroupId(gruppeId)).containsExactlyInAnyOrder(tony, bruce);
     }
 
     @Test
     void findByEmailAddress_shouldFindAllEmployees_whenTheEmailMatches() {
-        Mitarbeiter tony = mitarbeiterFactory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
+        Mitarbeiter tony = factory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
         when(repository.findByEmailAddress(new EmailAdresse("tony@avengers.com"))).thenReturn(Optional.of(tony));
-        assertThat(primaryPort.findByEmailAddress("tony@avengers.com")).contains(tony);
+        assertThat(service.findByEmailAddress("tony@avengers.com")).contains(tony);
     }
 
 }

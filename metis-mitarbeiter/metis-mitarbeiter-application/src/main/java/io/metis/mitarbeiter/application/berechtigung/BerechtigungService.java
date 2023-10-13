@@ -5,6 +5,7 @@ import io.metis.common.domain.EventPublisher;
 import io.metis.mitarbeiter.domain.berechtigung.Berechtigung;
 import io.metis.mitarbeiter.domain.berechtigung.BerechtigungFactory;
 import io.metis.mitarbeiter.domain.berechtigung.BerechtigungRepository;
+import io.metis.mitarbeiter.domain.berechtigung.Berechtigungsschluessel;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -18,7 +19,7 @@ class BerechtigungService implements ApplicationService, BerechtigungPrimaryPort
 
     @Override
     public Berechtigung initiiere(InitiiereBerechtigungCommand command) {
-        Optional<Berechtigung> existingPermissionByKey = repository.findByKey(command.key());
+        Optional<Berechtigung> existingPermissionByKey = repository.findById(new Berechtigungsschluessel(command.key()));
         if (existingPermissionByKey.isPresent()) {
             throw new BerechtigungsschluesselAlreadyTakenException(command.key());
         }
@@ -35,6 +36,6 @@ class BerechtigungService implements ApplicationService, BerechtigungPrimaryPort
 
     @Override
     public Berechtigung findByKey(String key) {
-        return repository.findByKey(key).orElseThrow(() -> new BerechtigungNotFoundException(key));
+        return repository.findById(new Berechtigungsschluessel(key)).orElseThrow(() -> new BerechtigungNotFoundException(key));
     }
 }

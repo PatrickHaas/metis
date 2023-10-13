@@ -3,7 +3,7 @@ package io.metis.common.domain;
 import java.util.List;
 import java.util.Optional;
 
-public interface Repository<T extends AggregateRoot, ID> {
+public interface Repository<T extends AggregateRoot<ID>, ID> {
 
     T save(T entity);
 

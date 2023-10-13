@@ -2,7 +2,7 @@ package io.metis.mitarbeiter.application.gruppe;
 
 import io.metis.common.application.ApplicationService;
 import io.metis.common.domain.EventPublisher;
-import io.metis.mitarbeiter.domain.berechtigung.BerechtigungId;
+import io.metis.mitarbeiter.domain.berechtigung.Berechtigungsschluessel;
 import io.metis.mitarbeiter.domain.gruppe.Gruppe;
 import io.metis.mitarbeiter.domain.gruppe.GruppeFactory;
 import io.metis.mitarbeiter.domain.gruppe.GruppeId;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 
 @RequiredArgsConstructor
-class GruppenService implements ApplicationService, GruppePrimaryPort {
+class GruppeService implements ApplicationService, GruppePrimaryPort {
     private final GruppeRepository repository;
     private final EventPublisher eventPublisher;
     private final GruppeFactory factory;
@@ -32,9 +32,9 @@ class GruppenService implements ApplicationService, GruppePrimaryPort {
     }
 
     @Override
-    public void weiseBerechtigungZu(GruppeId gruppeId, BerechtigungId berechtigungId) {
+    public void weiseBerechtigungZu(GruppeId gruppeId, Berechtigungsschluessel berechtigungsschluessel) {
         Gruppe gruppe = findById(gruppeId);
-        gruppe.assignPermission(berechtigungId);
+        gruppe.weiseZu(berechtigungsschluessel);
         saveAndPublish(gruppe, repository, eventPublisher);
     }
 

@@ -1,9 +1,10 @@
 package io.metis.mitarbeiter.domain.berechtigung;
 
 import org.jmolecules.ddd.annotation.ValueObject;
+import org.jmolecules.ddd.types.Identifier;
 
 @ValueObject
-public record Berechtigungsschluessel(String value) {
+public record Berechtigungsschluessel(String value) implements Identifier {
     static final int MIN_LENGTH = 2;
     static final int MAX_LENGTH = 60;
 

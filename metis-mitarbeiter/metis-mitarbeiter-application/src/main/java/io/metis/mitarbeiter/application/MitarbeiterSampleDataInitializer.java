@@ -34,7 +34,7 @@ public class MitarbeiterSampleDataInitializer implements SampleDataInitializer {
         Gruppe employeeGruppe = gruppePrimaryPort.findByName(EMPLOYEE_GROUP_NAME).orElse(null);
         if (employeeGruppe == null) {
             employeeGruppe = gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(EMPLOYEE_GROUP_NAME, "a group containing all employees of the company"));
-            log.debug("initiated group, name = {}, description = {}", employeeGruppe.getName(), employeeGruppe.getDescription());
+            log.debug("initiated group, name = {}, description = {}", employeeGruppe.getName(), employeeGruppe.getBeschreibung());
         }
 
         Gruppe backofficeGruppe = getOrCreateBackofficeGroup();
@@ -50,11 +50,11 @@ public class MitarbeiterSampleDataInitializer implements SampleDataInitializer {
         );
         List<Berechtigung> missingBackofficeBerechtigungs = backofficePermissions.stream()
                 .map(berechtigungPrimaryPort::findByKey)
-                .filter(permission -> !backofficeGruppe.getAssignedPermissions().contains(permission.getId()))
+                .filter(permission -> !backofficeGruppe.getZugewieseneBerechtigungen().contains(permission.getId()))
                 .toList();
         for (Berechtigung missingBackofficeBerechtigung : missingBackofficeBerechtigungs) {
             gruppePrimaryPort.weiseBerechtigungZu(backofficeGruppe.getId(), missingBackofficeBerechtigung.getId());
-            log.debug("assigned missing permission {} to group {}", missingBackofficeBerechtigung.getKey(), backofficeGruppe.getName());
+            log.debug("assigned missing permission {} to group {}", missingBackofficeBerechtigung.getSchluessel(), backofficeGruppe.getName());
         }
 
         Mitarbeiter ernst = mitarbeiterPrimaryPort.findByEmailAddress(EMAIL_ERNST_EMPLOYEE).orElse(null);
@@ -63,7 +63,7 @@ public class MitarbeiterSampleDataInitializer implements SampleDataInitializer {
             log.debug("created ernst employee, id = {}", ernst.getId().value());
         }
 
-        if (!ernst.getAssignedGroups().contains(employeeGruppe.getId())) {
+        if (!ernst.getZugewieseneGruppen().contains(employeeGruppe.getId())) {
             mitarbeiterPrimaryPort.weiseGruppeZu(new MitarbeiterEinerGruppeZuweisenCommand(employeeGruppe.getId(), ernst.getId()));
             log.debug("assigned ernst employee to group {}", employeeGruppe.getName());
         }
@@ -74,7 +74,7 @@ public class MitarbeiterSampleDataInitializer implements SampleDataInitializer {
             log.debug("created berta employee, id = {}", berta.getId().value());
         }
 
-        if (!berta.getAssignedGroups().contains(backofficeGruppe.getId())) {
+        if (!berta.getZugewieseneGruppen().contains(backofficeGruppe.getId())) {
             mitarbeiterPrimaryPort.weiseGruppeZu(new MitarbeiterEinerGruppeZuweisenCommand(backofficeGruppe.getId(), berta.getId()));
             log.debug("assigned berta employee to group {}", backofficeGruppe.getName());
         }

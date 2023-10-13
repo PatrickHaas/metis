@@ -26,8 +26,8 @@ class RestEmployeeMapper {
                 .dateOfBirth(mitarbeiter.getGeburtsdatum().value())
                 .hiredOn(mitarbeiter.getEinstelltAm().value())
                 .emailAddress(mitarbeiter.getEmailAdresse().value())
-                .jobTitle(mitarbeiter.getJobTitle())
-                .assignedGroups(mitarbeiter.getAssignedGroups().stream()
+                .jobTitle(mitarbeiter.getJobTitel())
+                .assignedGroups(mitarbeiter.getZugewieseneGruppen().stream()
                         .map(GruppeId::value)
                         .collect(Collectors.toSet()))
                 .build();

@@ -5,7 +5,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,7 +20,7 @@ class BerechtigungFactoryTest {
     }, delimiter = ';')
     void create_shouldRaiseException_whenPermissionKeyIsInvalid(String invalidPermissionKey, String expectedMessage) {
         BerechtigungFactory factory = new BerechtigungFactory();
-        assertThatThrownBy(() -> factory.create(UUID.randomUUID(), invalidPermissionKey, "description", LocalDateTime.now()))
+        assertThatThrownBy(() -> factory.create(invalidPermissionKey, "description", LocalDateTime.now()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(expectedMessage);
     }
@@ -36,7 +35,7 @@ class BerechtigungFactoryTest {
     }, delimiter = ';')
     void create_shouldRaiseException_whenGroupDescriptionIsInvalid(String invalidPermissionDescription, String expectedMessage) {
         BerechtigungFactory factory = new BerechtigungFactory();
-        assertThatThrownBy(() -> factory.create(UUID.randomUUID(), "my:permission", invalidPermissionDescription, LocalDateTime.now()))
+        assertThatThrownBy(() -> factory.create("my:permission", invalidPermissionDescription, LocalDateTime.now()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(expectedMessage);
     }
@@ -46,20 +45,18 @@ class BerechtigungFactoryTest {
         BerechtigungFactory factory = new BerechtigungFactory();
         Berechtigung group = factory.create("permission:a", "Best permission there is");
         assertThat(group.getId()).isNotNull();
-        assertThat(group.getKey().value()).isEqualTo("permission:a");
-        assertThat(group.getDescription().value()).isEqualTo("Best permission there is");
-        assertThat(group.getInitiatedAt()).isNull();
+        assertThat(group.getSchluessel().value()).isEqualTo("permission:a");
+        assertThat(group.getBeschreibung().value()).isEqualTo("Best permission there is");
+        assertThat(group.getInitiiertAm()).isNull();
     }
 
     @Test
     void create_shouldPassAllParameters() {
         BerechtigungFactory factory = new BerechtigungFactory();
-        UUID uuid = UUID.randomUUID();
         LocalDateTime initiatedAt = LocalDateTime.now();
-        Berechtigung group = factory.create(uuid, "permission:a", "Best permission there is", initiatedAt);
-        assertThat(group.getId().value()).isEqualTo(uuid);
-        assertThat(group.getKey().value()).isEqualTo("permission:a");
-        assertThat(group.getDescription().value()).isEqualTo("Best permission there is");
-        assertThat(group.getInitiatedAt()).isEqualTo(initiatedAt);
+        Berechtigung group = factory.create("permission:a", "Best permission there is", initiatedAt);
+        assertThat(group.getSchluessel().value()).isEqualTo("permission:a");
+        assertThat(group.getBeschreibung().value()).isEqualTo("Best permission there is");
+        assertThat(group.getInitiiertAm()).isEqualTo(initiatedAt);
     }
 }

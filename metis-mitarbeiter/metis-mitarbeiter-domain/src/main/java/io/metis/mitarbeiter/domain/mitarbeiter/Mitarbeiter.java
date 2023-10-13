@@ -21,11 +21,11 @@ public class Mitarbeiter extends AggregateRoot<MitarbeiterId> {
     private Geburtsdatum geburtsdatum;
     private EinstelltAm einstelltAm;
     private EmailAdresse emailAdresse;
-    private String jobTitle;
-    private final Set<GruppeId> assignedGroups;
+    private String jobTitel;
+    private final Set<GruppeId> zugewieseneGruppen;
 
-    Mitarbeiter(MitarbeiterId id, Vorname vorname, Nachname nachname, Geburtsdatum geburtsdatum, EmailAdresse emailAdresse, String jobTitle) {
-        this(id, vorname, nachname, geburtsdatum, null, emailAdresse, jobTitle, new HashSet<>());
+    Mitarbeiter(MitarbeiterId id, Vorname vorname, Nachname nachname, Geburtsdatum geburtsdatum, EmailAdresse emailAdresse, String jobTitel) {
+        this(id, vorname, nachname, geburtsdatum, null, emailAdresse, jobTitel, new HashSet<>());
     }
 
     public void einstellen() {
@@ -38,12 +38,12 @@ public class Mitarbeiter extends AggregateRoot<MitarbeiterId> {
         this.nachname = nachname;
         this.geburtsdatum = geburtsdatum;
         this.emailAdresse = emailAdresse;
-        this.jobTitle = jobTitle;
+        this.jobTitel = jobTitle;
         domainEvents().add(new MitarbeiterdatenAktualisiert(getId()));
     }
 
     public void zuweisen(GruppeId gruppeId) {
-        assignedGroups.add(gruppeId);
+        zugewieseneGruppen.add(gruppeId);
         domainEvents().add(new MitarbeiterEinerGruppeZugewiesen(getId(), gruppeId));
     }
 }

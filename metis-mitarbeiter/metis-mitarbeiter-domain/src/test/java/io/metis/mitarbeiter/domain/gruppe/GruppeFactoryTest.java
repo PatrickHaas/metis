@@ -47,9 +47,9 @@ class GruppeFactoryTest {
         Gruppe gruppe = factory.create("Group A", "Best group there is");
         assertThat(gruppe.getId()).isNotNull();
         assertThat(gruppe.getName().value()).isEqualTo("Group A");
-        assertThat(gruppe.getDescription().value()).isEqualTo("Best group there is");
-        assertThat(gruppe.getInitiatedAt()).isNull();
-        assertThat(gruppe.getAssignedPermissions()).isEmpty();
+        assertThat(gruppe.getBeschreibung().value()).isEqualTo("Best group there is");
+        assertThat(gruppe.getInitiiertAm()).isNull();
+        assertThat(gruppe.getZugewieseneBerechtigungen()).isEmpty();
     }
 
     @Test
@@ -60,8 +60,8 @@ class GruppeFactoryTest {
         Gruppe gruppe = factory.create(id, "Group A", "Best group there is", initiatedAt);
         assertThat(gruppe.getId().value()).isEqualTo(id);
         assertThat(gruppe.getName().value()).isEqualTo("Group A");
-        assertThat(gruppe.getDescription().value()).isEqualTo("Best group there is");
-        assertThat(gruppe.getInitiatedAt()).isEqualTo(initiatedAt);
-        assertThat(gruppe.getAssignedPermissions()).isEmpty();
+        assertThat(gruppe.getBeschreibung().value()).isEqualTo("Best group there is");
+        assertThat(gruppe.getInitiiertAm()).isEqualTo(initiatedAt);
+        assertThat(gruppe.getZugewieseneBerechtigungen()).isEmpty();
     }
 }

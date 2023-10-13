@@ -10,21 +10,24 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @org.jmolecules.ddd.annotation.AggregateRoot
-public class Berechtigung extends AggregateRoot<BerechtigungId> {
+public class Berechtigung extends AggregateRoot<Berechtigungsschluessel> {
     @Identity
-    private final BerechtigungId id;
-    private final Berechtigungsschluessel key;
-    private final Berechtigungsbeschreibung description;
-    private LocalDateTime initiatedAt;
+    private final Berechtigungsschluessel schluessel;
+    private final Berechtigungsbeschreibung beschreibung;
+    private LocalDateTime initiiertAm;
 
-    public Berechtigung(BerechtigungId id, Berechtigungsschluessel key, Berechtigungsbeschreibung description) {
-        this.id = id;
-        this.key = key;
-        this.description = description;
+    public Berechtigung(Berechtigungsschluessel schluessel, Berechtigungsbeschreibung beschreibung) {
+        this.schluessel = schluessel;
+        this.beschreibung = beschreibung;
     }
 
     public void initiieren() {
-        initiatedAt = LocalDateTime.now();
+        initiiertAm = LocalDateTime.now();
         domainEvents().add(new BerechtigungInitiiert(getId()));
+    }
+
+    @Override
+    public Berechtigungsschluessel getId() {
+        return getSchluessel();
     }
 }

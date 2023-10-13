@@ -1,6 +1,6 @@
 package io.metis.mitarbeiter.domain.gruppe;
 
-import io.metis.mitarbeiter.domain.berechtigung.BerechtigungId;
+import io.metis.mitarbeiter.domain.berechtigung.Berechtigungsschluessel;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -19,9 +19,9 @@ class GruppeTest {
 
         assertThat(gruppe.getId().value()).isEqualTo(groupId);
         assertThat(gruppe.getName().value()).isEqualTo("Test group");
-        assertThat(gruppe.getDescription().value()).isEqualTo("Test description");
-        assertThat(gruppe.getInitiatedAt()).isNotNull();
-        assertThat(gruppe.getInitiatedAt().toLocalDate()).isEqualTo(LocalDate.now());
+        assertThat(gruppe.getBeschreibung().value()).isEqualTo("Test description");
+        assertThat(gruppe.getInitiiertAm()).isNotNull();
+        assertThat(gruppe.getInitiiertAm().toLocalDate()).isEqualTo(LocalDate.now());
         assertThat(gruppe.domainEvents()).containsExactly(new GruppeInitiiert(gruppe.getId()));
     }
 
@@ -32,12 +32,12 @@ class GruppeTest {
         Gruppe gruppe = new Gruppe(new GruppeId(groupId), new Gruppenname("Test group"), new Gruppenbeschreibung("Test description"), initiatedAt);
         assertThat(gruppe.getId().value()).isEqualTo(groupId);
         assertThat(gruppe.getName().value()).isEqualTo("Test group");
-        assertThat(gruppe.getDescription().value()).isEqualTo("Test description");
-        assertThat(gruppe.getInitiatedAt()).isEqualTo(initiatedAt);
-        BerechtigungId berechtigungId = new BerechtigungId(UUID.randomUUID());
-        gruppe.assignPermission(berechtigungId);
-        assertThat(gruppe.domainEvents()).containsExactly(new BerechtigungZugewiesen(gruppe.getId(), berechtigungId));
-        assertThat(gruppe.getAssignedPermissions()).containsExactly(berechtigungId);
+        assertThat(gruppe.getBeschreibung().value()).isEqualTo("Test description");
+        assertThat(gruppe.getInitiiertAm()).isEqualTo(initiatedAt);
+        Berechtigungsschluessel berechtigungsschluessel = new Berechtigungsschluessel("schluessel");
+        gruppe.weiseZu(berechtigungsschluessel);
+        assertThat(gruppe.domainEvents()).containsExactly(new BerechtigungZugewiesen(gruppe.getId(), berechtigungsschluessel));
+        assertThat(gruppe.getZugewieseneBerechtigungen()).containsExactly(berechtigungsschluessel);
     }
 
 }

@@ -2,7 +2,7 @@ package io.metis.mitarbeiter.application.gruppe;
 
 import io.metis.common.domain.DomainEvent;
 import io.metis.common.domain.EventPublisher;
-import io.metis.mitarbeiter.domain.berechtigung.BerechtigungId;
+import io.metis.mitarbeiter.domain.berechtigung.Berechtigungsschluessel;
 import io.metis.mitarbeiter.domain.gruppe.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class GruppePrimaryPortTest {
+class GruppeServiceTest {
     @Mock
     private GruppeRepository repository;
     @Mock
@@ -32,17 +32,17 @@ class GruppePrimaryPortTest {
     private GruppeFactory factory;
 
     @InjectMocks
-    private GruppenService primaryPort;
+    private GruppeService service;
 
     @Test
     void initiate_shouldSaveAndPublish() {
         when(repository.findByName("CH-1")).thenReturn(Optional.empty());
         when(repository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
-        Gruppe gruppe = primaryPort.initiiere(new InitiiereGruppeCommand("CH-1", "Chapter 1 is the best"));
+        Gruppe gruppe = service.initiiere(new InitiiereGruppeCommand("CH-1", "Chapter 1 is the best"));
         assertThat(gruppe.getId()).isNotNull();
         assertThat(gruppe.getName().value()).isEqualTo("CH-1");
-        assertThat(gruppe.getDescription().value()).isEqualTo("Chapter 1 is the best");
-        assertThat(gruppe.getInitiatedAt().toLocalDate()).isEqualTo(LocalDate.now());
+        assertThat(gruppe.getBeschreibung().value()).isEqualTo("Chapter 1 is the best");
+        assertThat(gruppe.getInitiiertAm().toLocalDate()).isEqualTo(LocalDate.now());
 
         verify(factory).create("CH-1", "Chapter 1 is the best");
 
@@ -55,7 +55,7 @@ class GruppePrimaryPortTest {
     void initiate_shouldRaiseException_whenGroupNameIsAlreadyTaken() {
         when(repository.findByName("CH-1")).thenReturn(Optional.of(new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname("CH-1"), new Gruppenbeschreibung("Chapter 1 is the best"),
                 LocalDateTime.now())));
-        assertThatThrownBy(() -> primaryPort.initiiere(new InitiiereGruppeCommand("CH-1", "Chapter 1")))
+        assertThatThrownBy(() -> service.initiiere(new InitiiereGruppeCommand("CH-1", "Chapter 1")))
                 .isInstanceOf(GruppennameAlreadyTakenException.class);
 
         verifyNoInteractions(eventPublisher);
@@ -65,7 +65,7 @@ class GruppePrimaryPortTest {
     void findByName() {
         Gruppe gruppe = new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname("Chapter 1"), null, LocalDateTime.now());
         when(repository.findByName("Chapter 1")).thenReturn(Optional.of(gruppe));
-        assertThat(primaryPort.findByName("Chapter 1")).contains(gruppe);
+        assertThat(service.findByName("Chapter 1")).contains(gruppe);
     }
 
     @Test
@@ -73,7 +73,7 @@ class GruppePrimaryPortTest {
         GruppeId gruppeId = new GruppeId(UUID.randomUUID());
         Gruppe gruppe = new Gruppe(gruppeId, new Gruppenname("Chapter 1"), null, LocalDateTime.now());
         when(repository.findById(gruppeId)).thenReturn(Optional.of(gruppe));
-        assertThat(primaryPort.findById(gruppeId)).isEqualTo(gruppe);
+        assertThat(service.findById(gruppeId)).isEqualTo(gruppe);
     }
 
     @Test
@@ -81,7 +81,7 @@ class GruppePrimaryPortTest {
         Gruppe chapter1 = new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname("Chapter 1"), null, LocalDateTime.now());
         Gruppe chapter2 = new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname("Chapter 2"), null, LocalDateTime.now());
         when(repository.findAll()).thenReturn(List.of(chapter2, chapter1));
-        assertThat(primaryPort.findAll()).containsExactlyInAnyOrder(chapter1, chapter2);
+        assertThat(service.findAll()).containsExactlyInAnyOrder(chapter1, chapter2);
     }
 
     @Test
@@ -90,10 +90,10 @@ class GruppePrimaryPortTest {
         Gruppe gruppe = new Gruppe(gruppeId, new Gruppenname("Chapter 1"), null, LocalDateTime.now());
         when(repository.findById(gruppeId)).thenReturn(Optional.of(gruppe));
 
-        BerechtigungId berechtigungId = new BerechtigungId(UUID.randomUUID());
-        primaryPort.weiseBerechtigungZu(gruppeId, berechtigungId);
+        Berechtigungsschluessel berechtigungsschluessel = new Berechtigungsschluessel("schluessel");
+        service.weiseBerechtigungZu(gruppeId, berechtigungsschluessel);
 
-        assertThat(gruppe.getAssignedPermissions()).containsExactly(berechtigungId);
+        assertThat(gruppe.getZugewieseneBerechtigungen()).containsExactly(berechtigungsschluessel);
 
         verify(repository).save(gruppe);
         for (DomainEvent domainEvent : gruppe.domainEvents()) {

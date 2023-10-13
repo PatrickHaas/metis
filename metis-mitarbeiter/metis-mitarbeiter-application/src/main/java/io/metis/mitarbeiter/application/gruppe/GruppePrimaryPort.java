@@ -1,7 +1,7 @@
 package io.metis.mitarbeiter.application.gruppe;
 
 import io.metis.common.domain.EventPublisher;
-import io.metis.mitarbeiter.domain.berechtigung.BerechtigungId;
+import io.metis.mitarbeiter.domain.berechtigung.Berechtigungsschluessel;
 import io.metis.mitarbeiter.domain.gruppe.Gruppe;
 import io.metis.mitarbeiter.domain.gruppe.GruppeFactory;
 import io.metis.mitarbeiter.domain.gruppe.GruppeId;
@@ -15,12 +15,12 @@ import java.util.Optional;
 public interface GruppePrimaryPort {
 
     static GruppePrimaryPort create(GruppeRepository repository, EventPublisher eventPublisher) {
-        return new GruppenService(repository, eventPublisher, new GruppeFactory());
+        return new GruppeService(repository, eventPublisher, new GruppeFactory());
     }
 
     Gruppe initiiere(InitiiereGruppeCommand command);
 
-    void weiseBerechtigungZu(GruppeId gruppeId, BerechtigungId berechtigungId);
+    void weiseBerechtigungZu(GruppeId gruppeId, Berechtigungsschluessel berechtigungsschluessel);
 
     List<Gruppe> findAll();
 

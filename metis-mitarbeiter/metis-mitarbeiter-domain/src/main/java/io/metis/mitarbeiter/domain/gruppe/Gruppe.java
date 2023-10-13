@@ -1,7 +1,7 @@
 package io.metis.mitarbeiter.domain.gruppe;
 
 import io.metis.common.domain.AggregateRoot;
-import io.metis.mitarbeiter.domain.berechtigung.BerechtigungId;
+import io.metis.mitarbeiter.domain.berechtigung.Berechtigungsschluessel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jmolecules.ddd.annotation.Identity;
@@ -17,25 +17,25 @@ public class Gruppe extends AggregateRoot<GruppeId> {
     @Identity
     private final GruppeId id;
     private final Gruppenname name;
-    private final Gruppenbeschreibung description;
-    private final Set<BerechtigungId> assignedPermissions;
-    private LocalDateTime initiatedAt;
+    private final Gruppenbeschreibung beschreibung;
+    private final Set<Berechtigungsschluessel> zugewieseneBerechtigungen;
+    private LocalDateTime initiiertAm;
 
-    public Gruppe(GruppeId id, Gruppenname name, Gruppenbeschreibung description, LocalDateTime initiatedAt) {
-        this(id, name, description, new HashSet<>(), initiatedAt);
+    public Gruppe(GruppeId id, Gruppenname name, Gruppenbeschreibung beschreibung, LocalDateTime initiiertAm) {
+        this(id, name, beschreibung, new HashSet<>(), initiiertAm);
     }
 
-    public Gruppe(GruppeId id, Gruppenname name, Gruppenbeschreibung description) {
-        this(id, name, description, new HashSet<>(), null);
+    public Gruppe(GruppeId id, Gruppenname name, Gruppenbeschreibung beschreibung) {
+        this(id, name, beschreibung, new HashSet<>(), null);
     }
 
     public void initiate() {
-        initiatedAt = LocalDateTime.now();
+        initiiertAm = LocalDateTime.now();
         domainEvents().add(new GruppeInitiiert(getId()));
     }
 
-    public void assignPermission(BerechtigungId berechtigungId) {
-        assignedPermissions.add(berechtigungId);
-        domainEvents().add(new BerechtigungZugewiesen(getId(), berechtigungId));
+    public void weiseZu(Berechtigungsschluessel berechtigungsschluessel) {
+        zugewieseneBerechtigungen.add(berechtigungsschluessel);
+        domainEvents().add(new BerechtigungZugewiesen(getId(), berechtigungsschluessel));
     }
 }

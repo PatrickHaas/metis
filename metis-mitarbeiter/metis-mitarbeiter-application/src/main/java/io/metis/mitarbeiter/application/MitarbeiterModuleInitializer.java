@@ -59,7 +59,7 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
         );
 
         List<String> existingPermissionKeys = existingBerechtigungs.stream()
-                .map(Berechtigung::getKey)
+                .map(Berechtigung::getSchluessel)
                 .map(Berechtigungsschluessel::value).toList();
         List<InitiiereBerechtigungCommand> newInitiiereBerechtigungCommands = initiiereBerechtigungCommands.stream().filter(command -> !existingPermissionKeys.contains(command.key())).toList();
         List<Berechtigung> newBerechtigungs = new ArrayList<>();
@@ -74,11 +74,11 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
         Gruppe administrationGruppe = gruppePrimaryPort.findByName(ADMINISTRATION_GROUP_NAME).orElse(null);
         if (administrationGruppe == null) {
             administrationGruppe = gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(ADMINISTRATION_GROUP_NAME, "A group defining the administrators of a consultio application"));
-            log.debug("initiated group, name = {}, description = {}", administrationGruppe.getName(), administrationGruppe.getDescription());
+            log.debug("initiated group, name = {}, description = {}", administrationGruppe.getName(), administrationGruppe.getBeschreibung());
         }
         for (Berechtigung newBerechtigung : newBerechtigungs) {
             gruppePrimaryPort.weiseBerechtigungZu(administrationGruppe.getId(), newBerechtigung.getId());
-            log.debug("assigned permission {} to group {}", newBerechtigung.getKey(), administrationGruppe.getName());
+            log.debug("assigned permission {} to group {}", newBerechtigung.getSchluessel(), administrationGruppe.getName());
         }
         return administrationGruppe;
     }

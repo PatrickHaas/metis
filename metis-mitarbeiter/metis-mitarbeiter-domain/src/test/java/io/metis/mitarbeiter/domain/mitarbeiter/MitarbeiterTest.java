@@ -33,7 +33,7 @@ class MitarbeiterTest {
         assertThat(mitarbeiter.getNachname().value()).isEqualTo("Parker");
         assertThat(mitarbeiter.getGeburtsdatum().value()).isEqualTo(LocalDate.of(2010, 8, 10));
         assertThat(mitarbeiter.getEmailAdresse().value()).isEqualTo("peter@avengers.com");
-        assertThat(mitarbeiter.getJobTitle()).isEqualTo("Spiderman");
+        assertThat(mitarbeiter.getJobTitel()).isEqualTo("Spiderman");
         assertThat(mitarbeiter.domainEvents()).containsExactly(new MitarbeiterdatenAktualisiert(mitarbeiterId));
     }
 

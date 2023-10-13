@@ -22,8 +22,8 @@ class MitarbeiterFactoryTest {
         assertThat(mitarbeiter.getGeburtsdatum().value()).isEqualTo(LocalDate.of(1970, 5, 29));
         assertThat(mitarbeiter.getEinstelltAm().value()).isEqualTo(LocalDate.now());
         assertThat(mitarbeiter.getEmailAdresse().value()).isEqualTo("tony@avengers.com");
-        assertThat(mitarbeiter.getJobTitle()).isEqualTo("Iron-Man");
-        assertThat(mitarbeiter.getAssignedGroups()).containsExactly(new GruppeId(groupId));
+        assertThat(mitarbeiter.getJobTitel()).isEqualTo("Iron-Man");
+        assertThat(mitarbeiter.getZugewieseneGruppen()).containsExactly(new GruppeId(groupId));
     }
 
     @Test
@@ -36,8 +36,8 @@ class MitarbeiterFactoryTest {
         assertThat(mitarbeiter.getGeburtsdatum().value()).isEqualTo(LocalDate.of(1970, 5, 29));
         assertThat(mitarbeiter.getEinstelltAm()).isNull();
         assertThat(mitarbeiter.getEmailAdresse().value()).isEqualTo("tony@avengers.com");
-        assertThat(mitarbeiter.getJobTitle()).isEqualTo("Iron-Man");
-        assertThat(mitarbeiter.getAssignedGroups()).isEmpty();
+        assertThat(mitarbeiter.getJobTitel()).isEqualTo("Iron-Man");
+        assertThat(mitarbeiter.getZugewieseneGruppen()).isEmpty();
     }
 
     @Test
@@ -50,8 +50,8 @@ class MitarbeiterFactoryTest {
         assertThat(mitarbeiter.getGeburtsdatum().value()).isEqualTo(LocalDate.of(1970, 5, 29));
         assertThat(mitarbeiter.getEinstelltAm().value()).isEqualTo(LocalDate.now());
         assertThat(mitarbeiter.getEmailAdresse().value()).isEqualTo("tony@avengers.com");
-        assertThat(mitarbeiter.getJobTitle()).isEqualTo("Iron-Man");
-        assertThat(mitarbeiter.getAssignedGroups()).isEmpty();
+        assertThat(mitarbeiter.getJobTitel()).isEqualTo("Iron-Man");
+        assertThat(mitarbeiter.getZugewieseneGruppen()).isEmpty();
     }
 
 }
