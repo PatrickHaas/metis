@@ -11,8 +11,8 @@ verbunden mit einer hexagonalen Architektur nutzen können, um ihre komplexität
 zu halten. Da sich die Struktur meiner Applikation in diesem Repository vermutlich stetig weiterentwickeln wird und sich
 in alle möglichen Formen verwandeln kann, habe ich mich für den Arbeitstitel <i>metis</i> entschieden.
 
-Als Fachlichkeit für unsere Applikation bediene ich mich an Anwendungsfällen für ein Ressourcen-Management-System
-innerhalb eines Beraterunternehmens. Diese entstammen jedoch lediglich meiner Auffassung.
+Als Fachlichkeit für unsere Applikation bediene ich mich an Anwendungsfällen für ein ERP-System (Enterprise Resource
+Planning) innerhalb eines Beraterunternehmens. Diese entstammen jedoch lediglich meiner Auffassung.
 
 An dieser Stelle ein kleiner Disclaimer:
 
