@@ -8,6 +8,7 @@ import io.metis.common.adapters.security.SecurityConfiguration;
 import io.metis.common.domain.mitarbeiter.MitarbeiterId;
 import io.metis.mitarbeiter.application.mitarbeiter.MitarbeiterNotFoundException;
 import io.metis.mitarbeiter.application.mitarbeiter.MitarbeiterPrimaryPort;
+import io.metis.mitarbeiter.application.mitarbeiter.StelleMitarbeiterEinCommand;
 import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterFactory;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,6 +33,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {MitarbeiterRestAdapter.class})
@@ -124,4 +127,128 @@ class MitarbeiterRestAdapterTest {
         assertThat(mitarbeiterMessage).isEqualTo(MitarbeiterMessage.from(tony));
     }
 
+    @Test
+    void einstellen_shouldReturnUnauthorized_whenNoAuthCouldBeFound() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void einstellen_shouldReturnForbidden_whenAuthorityIsMissing() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenFirstNameIsNull() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage(null, "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenFirstNameIsEmpty() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenFirstNameIsBlank() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("   ", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenLastNameIsNull() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", null, LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenLastNameIsEmpty() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenLastNameIsBlank() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "   ", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenDateOfBirthIsNull() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "Stark", null, "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenEmailAddressIsNull() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "Stark", LocalDate.of(1970, 5, 29), null, "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void einstellen_shouldReturnBadRequest_whenEmailAddressIsInvalid() throws Exception {
+        mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "Stark", LocalDate.of(1970, 5, 29), "invalid-email", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void einstellen_shouldSuccessfullyHireTheEmployee() throws Exception {
+        MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
+        Mitarbeiter tony = factory.create(mitarbeiterId.value(), "Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man");
+        tony.einstellen();
+        when(primaryPort.stelleEin(new StelleMitarbeiterEinCommand("Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man"))).thenReturn(tony);
+        MitarbeiterMessage mitarbeiterMessage = objectMapper.readValue(mockMvc.perform(post("/rest/v1/mitarbeiter")
+                        .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .with(jwt().authorities(new SimpleGrantedAuthority("employees:employees:hire"))))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), MitarbeiterMessage.class);
+        assertThat(mitarbeiterMessage).isEqualTo(MitarbeiterMessage.from(tony));
+    }
 }
