@@ -49,7 +49,7 @@ public class MitarbeiterSampleDataInitializer implements SampleDataInitializer {
                 "employees:groups:list"
         );
         List<Berechtigung> missingBackofficeBerechtigungs = backofficePermissions.stream()
-                .map(berechtigungPrimaryPort::findByKey)
+                .map(berechtigungPrimaryPort::getByKey)
                 .filter(permission -> !backofficeGruppe.getZugewieseneBerechtigungen().contains(permission.getId()))
                 .toList();
         for (Berechtigung missingBackofficeBerechtigung : missingBackofficeBerechtigungs) {

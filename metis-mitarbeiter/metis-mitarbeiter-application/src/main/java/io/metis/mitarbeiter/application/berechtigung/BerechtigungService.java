@@ -35,7 +35,7 @@ class BerechtigungService implements ApplicationService, BerechtigungPrimaryPort
     }
 
     @Override
-    public Berechtigung findByKey(String key) {
+    public Berechtigung getByKey(String key) {
         return repository.findById(new Berechtigungsschluessel(key)).orElseThrow(() -> new BerechtigungNotFoundException(key));
     }
 }

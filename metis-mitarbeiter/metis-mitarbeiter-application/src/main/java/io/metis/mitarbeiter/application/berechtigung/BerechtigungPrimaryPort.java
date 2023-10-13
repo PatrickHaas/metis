@@ -19,5 +19,5 @@ public interface BerechtigungPrimaryPort {
 
     List<Berechtigung> findAll();
 
-    Berechtigung findByKey(String key);
+    Berechtigung getByKey(String key);
 }
