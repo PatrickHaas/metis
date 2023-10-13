@@ -20,7 +20,7 @@ public class MitarbeiterRestConfiguration {
     }
 
     @Bean
-    MitarbeiterRestMapper mitarbeiterRestMapper(MitarbeiterFactory factory) {
-        return new MitarbeiterRestMapper(factory);
+    MitarbeiterRestMapper mitarbeiterRestMapper() {
+        return new MitarbeiterRestMapper();
     }
 }

@@ -1,8 +1,7 @@
 package io.metis.mitarbeiter.adapters.rest.mitarbeiter;
 
-import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
-import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterFactory;
 import io.metis.mitarbeiter.domain.gruppe.GruppeId;
+import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -11,12 +10,6 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 class MitarbeiterRestMapper {
-
-    private final MitarbeiterFactory mitarbeiterFactory;
-
-    Mitarbeiter from(MitarbeiterMessage message) {
-        return mitarbeiterFactory.create(message.id(), message.firstName(), message.lastName(), message.dateOfBirth(), message.hiredOn(), message.emailAddress(), message.jobTitle(), message.assignedGroups());
-    }
 
     MitarbeiterMessage to(Mitarbeiter mitarbeiter) {
         return MitarbeiterMessage.builder()

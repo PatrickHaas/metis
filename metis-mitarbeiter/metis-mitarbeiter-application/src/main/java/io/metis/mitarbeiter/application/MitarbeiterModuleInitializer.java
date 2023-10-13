@@ -33,8 +33,8 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
     public void initialize() {
         List<Berechtigung> newBerechtigungs = getOrCreatePermissions();
         Gruppe administrationGruppe = getOrCreateAdministrationGroup(newBerechtigungs);
-        if (mitarbeiterPrimaryPort.findByEmailAddress("administrator@consultio.de").isEmpty()) {
-            Mitarbeiter administrator = mitarbeiterPrimaryPort.stelleEin(new StelleMitarbeiterEinCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@consultio.de", "Application administrator"));
+        if (mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.de").isEmpty()) {
+            Mitarbeiter administrator = mitarbeiterPrimaryPort.stelleEin(new StelleMitarbeiterEinCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.de", "Application administrator"));
             log.debug("created application administrator, id = {}", administrator.getId().value());
             mitarbeiterPrimaryPort.weiseGruppeZu(new MitarbeiterEinerGruppeZuweisenCommand(administrationGruppe.getId(), administrator.getId()));
             log.debug("assigned application administrator to administration group {}", administrationGruppe.getName());
@@ -42,23 +42,23 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
     }
 
     private List<Berechtigung> getOrCreatePermissions() {
-        List<Berechtigung> existingBerechtigungs = berechtigungPrimaryPort.findAll();
+        List<Berechtigung> existierendeBerechtigungen = berechtigungPrimaryPort.findAll();
         List<InitiiereBerechtigungCommand> initiiereBerechtigungCommands = List.of(
-                new InitiiereBerechtigungCommand("employees", ""),
+                new InitiiereBerechtigungCommand("employees", "Genereller Zugriff zum Modul für Mitarbeiterstammdaten"),
 
-                new InitiiereBerechtigungCommand("employees:employees:list", ""),
-                new InitiiereBerechtigungCommand("employees:employees:show", ""),
-                new InitiiereBerechtigungCommand("employees:employees:hire", ""),
-                new InitiiereBerechtigungCommand("employees:employees:edit", ""),
-                new InitiiereBerechtigungCommand("employees:employees:delete", ""),
-                new InitiiereBerechtigungCommand("employees:employees:assigned-groups:show", ""),
-                new InitiiereBerechtigungCommand("employees:employees:assign-to-group", ""),
+                new InitiiereBerechtigungCommand("employees:employees:list", "Anzeige aller Mitarbeiterstammdaten"),
+                new InitiiereBerechtigungCommand("employees:employees:show", "Einsicht in einzelne Mitarbeiterstammdaten"),
+                new InitiiereBerechtigungCommand("employees:employees:hire", "Einstellen neuer Mitarbeiter"),
+                new InitiiereBerechtigungCommand("employees:employees:edit", "Aktualisieren von Mitarbeiterstammdaten"),
+                new InitiiereBerechtigungCommand("employees:employees:delete", "Entfernen von Mitarbeitern"),
+                new InitiiereBerechtigungCommand("employees:employees:assigned-groups:show", "Gruppenzuweisungen von Mitarbeitern ansehen"),
+                new InitiiereBerechtigungCommand("employees:employees:assign-to-group", "Mitarbeiter einer Gruppe zuweisen"),
 
-                new InitiiereBerechtigungCommand("employees:groups:list", ""),
-                new InitiiereBerechtigungCommand("employees:groups:initiate", "")
+                new InitiiereBerechtigungCommand("employees:groups:list", "Anzeige aller Gruppen"),
+                new InitiiereBerechtigungCommand("employees:groups:initiate", "Neuer Gruppen initiieren")
         );
 
-        List<String> existingPermissionKeys = existingBerechtigungs.stream()
+        List<String> existingPermissionKeys = existierendeBerechtigungen.stream()
                 .map(Berechtigung::getSchluessel)
                 .map(Berechtigungsschluessel::value).toList();
         List<InitiiereBerechtigungCommand> newInitiiereBerechtigungCommands = initiiereBerechtigungCommands.stream().filter(command -> !existingPermissionKeys.contains(command.key())).toList();
@@ -70,13 +70,13 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
         return newBerechtigungs;
     }
 
-    private Gruppe getOrCreateAdministrationGroup(List<Berechtigung> newBerechtigungs) {
+    private Gruppe getOrCreateAdministrationGroup(List<Berechtigung> neueBerechtigungen) {
         Gruppe administrationGruppe = gruppePrimaryPort.findByName(ADMINISTRATION_GROUP_NAME).orElse(null);
         if (administrationGruppe == null) {
             administrationGruppe = gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(ADMINISTRATION_GROUP_NAME, "A group defining the administrators of a consultio application"));
             log.debug("initiated group, name = {}, description = {}", administrationGruppe.getName(), administrationGruppe.getBeschreibung());
         }
-        for (Berechtigung newBerechtigung : newBerechtigungs) {
+        for (Berechtigung newBerechtigung : neueBerechtigungen) {
             gruppePrimaryPort.weiseBerechtigungZu(administrationGruppe.getId(), newBerechtigung.getId());
             log.debug("assigned permission {} to group {}", newBerechtigung.getSchluessel(), administrationGruppe.getName());
         }
