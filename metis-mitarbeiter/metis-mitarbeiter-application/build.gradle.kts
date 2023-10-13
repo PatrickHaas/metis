@@ -20,7 +20,7 @@ dependencies {
 
     implementation(project(":metis-common:metis-common-domain"))
     implementation(project(":metis-common:metis-common-application"))
-    implementation(project(":metis-employees:metis-mitarbeiter-domain"))
+    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-domain"))
     implementation(libs.slf4j.api)
 
     testImplementation(platform(libs.junit.jupiter.bom))

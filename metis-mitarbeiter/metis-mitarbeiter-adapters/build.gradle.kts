@@ -25,13 +25,8 @@ dependencies {
     implementation(project(":metis-common:metis-common-domain"))
     implementation(project(":metis-common:metis-common-application"))
     implementation(project(":metis-common:metis-common-adapters"))
-    implementation(project(":metis-employees:metis-mitarbeiter-domain"))
-
-    implementation(project(":metis-employees:metis-employees-application"))
-
-    implementation("org.instancio:instancio-core:3.2.0")
-
-    implementation("org.reflections:reflections:0.10.2")
+    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-domain"))
+    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-application"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
