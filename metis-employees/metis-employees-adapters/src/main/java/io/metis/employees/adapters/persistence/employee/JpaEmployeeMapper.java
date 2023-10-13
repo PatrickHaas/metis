@@ -1,8 +1,8 @@
 package io.metis.employees.adapters.persistence.employee;
 
-import io.metis.employees.domain.employee.Employee;
-import io.metis.employees.domain.employee.EmployeeFactory;
-import io.metis.employees.domain.group.GroupId;
+import io.metis.employees.domain.mitarbeiter.Mitarbeiter;
+import io.metis.employees.domain.mitarbeiter.MitarbeiterFactory;
+import io.metis.employees.domain.gruppe.GruppeId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -12,23 +12,23 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class JpaEmployeeMapper {
 
-    private final EmployeeFactory employeeFactory;
+    private final MitarbeiterFactory mitarbeiterFactory;
 
-    Employee from(EmployeeEntity entity) {
-        return employeeFactory.create(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getDateOfBirth(), entity.getHiredOn(), entity.getEmailAddress(), entity.getJobTitle(), entity.getAssignedGroups());
+    Mitarbeiter from(EmployeeEntity entity) {
+        return mitarbeiterFactory.create(entity.getId(), entity.getFirstName(), entity.getLastName(), entity.getDateOfBirth(), entity.getHiredOn(), entity.getEmailAddress(), entity.getJobTitle(), entity.getAssignedGroups());
     }
 
-    EmployeeEntity to(Employee employee) {
+    EmployeeEntity to(Mitarbeiter mitarbeiter) {
         return EmployeeEntity.builder()
-                .id(employee.getId().value())
-                .firstName(employee.getFirstName().value())
-                .lastName(employee.getLastName().value())
-                .dateOfBirth(employee.getDateOfBirth().value())
-                .hiredOn(employee.getHiredOn().value())
-                .emailAddress(employee.getEmailAddress().value())
-                .jobTitle(employee.getJobTitle())
-                .assignedGroups(employee.getAssignedGroups().stream()
-                        .map(GroupId::value)
+                .id(mitarbeiter.getId().value())
+                .firstName(mitarbeiter.getVorname().value())
+                .lastName(mitarbeiter.getNachname().value())
+                .dateOfBirth(mitarbeiter.getGeburtsdatum().value())
+                .hiredOn(mitarbeiter.getEinstelltAm().value())
+                .emailAddress(mitarbeiter.getEmailAdresse().value())
+                .jobTitle(mitarbeiter.getJobTitle())
+                .assignedGroups(mitarbeiter.getAssignedGroups().stream()
+                        .map(GruppeId::value)
                         .collect(Collectors.toSet()))
                 .build();
     }
