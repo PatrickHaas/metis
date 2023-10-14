@@ -5,6 +5,7 @@ import io.metis.common.domain.mitarbeiter.MitarbeiterId;
 import io.metis.mitarbeiter.domain.gruppe.GruppeId;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.HashSet;
@@ -13,8 +14,10 @@ import java.util.Set;
 @Getter
 @org.jmolecules.ddd.annotation.AggregateRoot
 @AllArgsConstructor(access = AccessLevel.PACKAGE)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Mitarbeiter extends AggregateRoot<MitarbeiterId> {
     @org.jmolecules.ddd.annotation.Identity
+    @EqualsAndHashCode.Include
     private final MitarbeiterId id;
     private Vorname vorname;
     private Nachname nachname;
@@ -33,7 +36,7 @@ public class Mitarbeiter extends AggregateRoot<MitarbeiterId> {
         domainEvents().add(new MitarbeiterEingestellt(getId(), getEinstelltAm().value()));
     }
 
-    public void update(Vorname vorname, Nachname nachname, Geburtsdatum geburtsdatum, EmailAdresse emailAdresse, String jobTitle) {
+    public void aktualisiereDaten(Vorname vorname, Nachname nachname, Geburtsdatum geburtsdatum, EmailAdresse emailAdresse, String jobTitle) {
         this.vorname = vorname;
         this.nachname = nachname;
         this.geburtsdatum = geburtsdatum;

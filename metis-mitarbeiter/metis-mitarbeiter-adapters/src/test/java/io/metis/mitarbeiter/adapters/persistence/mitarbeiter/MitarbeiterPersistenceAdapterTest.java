@@ -1,6 +1,8 @@
 package io.metis.mitarbeiter.adapters.persistence.mitarbeiter;
 
 import io.metis.common.adapters.CommonConfiguration;
+import io.metis.mitarbeiter.domain.gruppe.GruppeId;
+import io.metis.mitarbeiter.domain.mitarbeiter.EmailAdresse;
 import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterFactory;
 import org.junit.jupiter.api.Test;
@@ -49,5 +51,33 @@ class MitarbeiterPersistenceAdapterTest {
         assertThat(savedMitarbeiter.getZugewieseneGruppen()).isEqualTo(mitarbeiter.getZugewieseneGruppen());
     }
 
+    @Test
+    void findByEmailAddress_shouldReturnMatchingEmployee() {
+        Mitarbeiter mitarbeiter = mitarbeiterFactory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), LocalDate.now(), "tony@avengers.com", "Iron-Man", Set.of(
+                UUID.randomUUID(),
+                UUID.randomUUID()
+        ));
+        Mitarbeiter savedMitarbeiter = adapter.save(mitarbeiter);
+        assertThat(adapter.findByEmailAddress(new EmailAdresse("tony@avengers.com"))).contains(savedMitarbeiter);
+    }
+
+    @Test
+    void findByGroupId_shouldReturnMatchingEmployee() {
+        UUID groupId1 = UUID.randomUUID();
+        UUID groupId2 = UUID.randomUUID();
+        Mitarbeiter tony = mitarbeiterFactory.create(UUID.randomUUID(), "Tony", "Stark", LocalDate.of(1970, 5, 29), LocalDate.now(), "tony@avengers.com", "Iron-Man", Set.of(
+                groupId2
+        ));
+        tony.einstellen();
+        adapter.save(tony);
+        Mitarbeiter bruce = mitarbeiterFactory.create(UUID.randomUUID(), "Bruce", "Banner", LocalDate.of(1970, 5, 29), LocalDate.now(), "bruce@avengers.com", "Hulk", Set.of(
+                groupId1,
+                groupId2
+        ));
+        bruce.einstellen();
+        adapter.save(bruce);
+        assertThat(adapter.findByGroupId(new GruppeId(groupId1))).containsExactlyInAnyOrder(bruce);
+        assertThat(adapter.findByGroupId(new GruppeId(groupId2))).containsExactlyInAnyOrder(bruce, tony);
+    }
 
 }

@@ -35,7 +35,7 @@ class MitarbeiterService implements ApplicationService, MitarbeiterPrimaryPort {
     @Override
     public Mitarbeiter aktualisiereDaten(AktualisiereMitarbeiterdatenCommand command) {
         Mitarbeiter mitarbeiter = getById(command.id());
-        mitarbeiter.update(new Vorname(command.firstName()), new Nachname(command.lastName()), new Geburtsdatum(command.dateOfBirth()), new EmailAdresse(command.emailAddress()), command.jobTitle());
+        mitarbeiter.aktualisiereDaten(new Vorname(command.firstName()), new Nachname(command.lastName()), new Geburtsdatum(command.dateOfBirth()), new EmailAdresse(command.emailAddress()), command.jobTitle());
         return saveAndPublish(mitarbeiter, repository, eventPublisher);
     }
 

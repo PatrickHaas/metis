@@ -3,10 +3,10 @@ package io.metis.mitarbeiter.adapters.persistence.mitarbeiter;
 
 import io.metis.common.adapters.persistence.AbstractJpaPersistenceAdapter;
 import io.metis.common.domain.mitarbeiter.MitarbeiterId;
+import io.metis.mitarbeiter.domain.gruppe.GruppeId;
 import io.metis.mitarbeiter.domain.mitarbeiter.EmailAdresse;
 import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterRepository;
-import io.metis.mitarbeiter.domain.gruppe.GruppeId;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @Repository
 class MitarbeiterPersistenceAdapter extends AbstractJpaPersistenceAdapter<MitarbeiterSpringRepository, Mitarbeiter, MitarbeiterId, MitarbeiterEntity, UUID> implements MitarbeiterRepository {
 
-    public MitarbeiterPersistenceAdapter(MitarbeiterSpringRepository repository, MitarbeiterMapper mapper) {
+    MitarbeiterPersistenceAdapter(MitarbeiterSpringRepository repository, MitarbeiterMapper mapper) {
         super(repository, mapper::to, mapper::from, MitarbeiterId::value);
     }
 

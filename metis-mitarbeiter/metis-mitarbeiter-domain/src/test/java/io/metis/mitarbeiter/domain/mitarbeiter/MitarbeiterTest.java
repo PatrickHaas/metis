@@ -28,7 +28,7 @@ class MitarbeiterTest {
     void update_shouldUpdateValuesAndCreateDomainEvent() {
         MitarbeiterId mitarbeiterId = new MitarbeiterId(UUID.randomUUID());
         Mitarbeiter mitarbeiter = new Mitarbeiter(mitarbeiterId, new Vorname("Tony"), new Nachname("Stark"), Geburtsdatum.of(1980, 5, 28), EinstelltAm.now(), new EmailAdresse("tony@avengers.com"), "Iron-Man", new HashSet<>());
-        mitarbeiter.update(new Vorname("Peter"), new Nachname("Parker"), Geburtsdatum.of(2010, 8, 10), new EmailAdresse("peter@avengers.com"), "Spiderman");
+        mitarbeiter.aktualisiereDaten(new Vorname("Peter"), new Nachname("Parker"), Geburtsdatum.of(2010, 8, 10), new EmailAdresse("peter@avengers.com"), "Spiderman");
         assertThat(mitarbeiter.getVorname().value()).isEqualTo("Peter");
         assertThat(mitarbeiter.getNachname().value()).isEqualTo("Parker");
         assertThat(mitarbeiter.getGeburtsdatum().value()).isEqualTo(LocalDate.of(2010, 8, 10));
