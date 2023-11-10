@@ -30,7 +30,7 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
     private final MitarbeiterPrimaryPort mitarbeiterPrimaryPort;
 
     @Override
-    public void initialize() {
+    public void initialize(Configuration configuration) {
         List<Berechtigung> newBerechtigungs = getOrCreatePermissions();
         Gruppe administrationGruppe = getOrCreateAdministrationGroup(newBerechtigungs);
         if (mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.de").isEmpty()) {

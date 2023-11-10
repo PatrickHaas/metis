@@ -30,3 +30,4 @@ keycloak:
 
 modules:
   initialize: true
+  sample-data: false

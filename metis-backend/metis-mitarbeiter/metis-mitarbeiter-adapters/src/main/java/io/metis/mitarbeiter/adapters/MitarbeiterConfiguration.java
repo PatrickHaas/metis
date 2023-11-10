@@ -1,10 +1,13 @@
 package io.metis.mitarbeiter.adapters;
 
 import io.metis.common.adapters.CommonConfiguration;
+import io.metis.common.domain.EventHandlerRegistry;
 import io.metis.common.domain.EventPublisher;
+import io.metis.mitarbeiter.application.benutzerkonto.BenutzerkontoPrimaryPort;
 import io.metis.mitarbeiter.application.berechtigung.BerechtigungPrimaryPort;
 import io.metis.mitarbeiter.application.gruppe.GruppePrimaryPort;
 import io.metis.mitarbeiter.application.mitarbeiter.MitarbeiterPrimaryPort;
+import io.metis.mitarbeiter.domain.benutzerkonto.BenutzerkontoRepository;
 import io.metis.mitarbeiter.domain.berechtigung.BerechtigungRepository;
 import io.metis.mitarbeiter.domain.gruppe.GruppeRepository;
 import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterRepository;
@@ -28,5 +31,10 @@ public class MitarbeiterConfiguration {
     @Bean
     GruppePrimaryPort gruppePrimaryPort(GruppeRepository repository, EventPublisher eventPublisher) {
         return GruppePrimaryPort.create(repository, eventPublisher);
+    }
+
+    @Bean
+    BenutzerkontoPrimaryPort benutzerkontoPrimaryPort(BenutzerkontoRepository repository, MitarbeiterPrimaryPort mitarbeiterPrimaryPort, EventHandlerRegistry eventHandlerRegistry) {
+        return BenutzerkontoPrimaryPort.create(repository, mitarbeiterPrimaryPort, eventHandlerRegistry);
     }
 }

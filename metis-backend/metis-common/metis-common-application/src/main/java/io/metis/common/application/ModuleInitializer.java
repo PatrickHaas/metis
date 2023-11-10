@@ -5,7 +5,9 @@ import java.util.Set;
 
 public interface ModuleInitializer {
 
-    void initialize();
+    record Configuration(boolean shouldCreateSampleData) {}
+
+    void initialize(Configuration configuration);
 
     default Set<Class<? extends ModuleInitializer>> getDependencies() {
         return Collections.emptySet();

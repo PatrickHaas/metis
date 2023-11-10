@@ -4,6 +4,7 @@ import io.metis.common.application.ModuleInitializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,6 +23,9 @@ import java.util.Set;
 public class ApplicationInitializer implements ApplicationRunner {
 
     private final ApplicationContext applicationContext;
+
+    @Value("${modules.sample-data}#{null}")
+    private boolean sampleData;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -47,7 +51,7 @@ public class ApplicationInitializer implements ApplicationRunner {
 
         for (ModuleInitializer moduleInitializer : initializationQueue) {
             long start = System.currentTimeMillis();
-            moduleInitializer.initialize();
+            moduleInitializer.initialize(new ModuleInitializer.Configuration(sampleData));
             long duration = System.currentTimeMillis() - start;
             log.debug("executed module initializer {} in {}ms", moduleInitializer, duration);
         }

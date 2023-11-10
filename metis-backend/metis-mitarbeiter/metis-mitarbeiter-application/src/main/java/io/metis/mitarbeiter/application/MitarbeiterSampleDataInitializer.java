@@ -31,7 +31,11 @@ public class MitarbeiterSampleDataInitializer implements ModuleInitializer {
     private final BerechtigungPrimaryPort berechtigungPrimaryPort;
 
     @Override
-    public void initialize() {
+    public void initialize(Configuration configuration) {
+        if (!configuration.shouldCreateSampleData()) {
+            return;
+        }
+
         Gruppe employeeGruppe = gruppePrimaryPort.findByName(EMPLOYEE_GROUP_NAME).orElse(null);
         if (employeeGruppe == null) {
             employeeGruppe = gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(EMPLOYEE_GROUP_NAME, "a group containing all employees of the company"));

@@ -1,5 +1,6 @@
 package io.metis.mitarbeiter.application;
 
+import io.metis.common.application.ModuleInitializer;
 import io.metis.mitarbeiter.application.berechtigung.BerechtigungPrimaryPort;
 import io.metis.mitarbeiter.application.berechtigung.InitiiereBerechtigungCommand;
 import io.metis.mitarbeiter.application.gruppe.GruppePrimaryPort;
@@ -77,7 +78,7 @@ class MitarbeiterModuleInitializerTest {
         when(mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.de"))
                 .thenReturn(Optional.of(mitarbeiterFactory.create(UUID.randomUUID(), "Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.de", "Application administrator")));
 
-        initializer.initialize();
+        initializer.initialize(new ModuleInitializer.Configuration(false));
 
         for (Berechtigung berechtigung : berechtigungen) {
             verify(gruppePrimaryPort).weiseBerechtigungZu(administrationGruppe.getId(), berechtigung.getSchluessel());
@@ -111,7 +112,7 @@ class MitarbeiterModuleInitializerTest {
         when(mitarbeiterPrimaryPort.stelleEin(new StelleMitarbeiterEinCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.de", "Application administrator")))
                 .thenReturn(mitarbeiter);
 
-        initializer.initialize();
+        initializer.initialize(new ModuleInitializer.Configuration(false));
         verify(mitarbeiterPrimaryPort).weiseGruppeZu(new MitarbeiterEinerGruppeZuweisenCommand(administrationGruppe.getId(), mitarbeiter.getId()));
     }
 
