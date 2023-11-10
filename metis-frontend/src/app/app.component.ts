@@ -4,7 +4,7 @@ import {OidcSecurityService} from "angular-auth-oidc-client";
 @Component({
     selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.sass']
+    styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
     constructor(private oidcSecurityService: OidcSecurityService) {

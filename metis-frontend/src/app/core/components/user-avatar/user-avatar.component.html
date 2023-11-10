@@ -1,0 +1,28 @@
+<a
+  data-cy="user-menu"
+  class="nav-link dropdown-toggle"
+  href="#"
+  role="button"
+  data-bs-toggle="dropdown"
+  *ngIf="username; else spinner"
+  aria-expanded="false"
+>
+  <i
+    class="bi bi-person-circle"></i> {{ username }}
+</a>
+<ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+  <li>
+    <a
+      data-cy="logout-button"
+      class="dropdown-item"
+      href="javascript:void(0)"
+      (click)="logout()"
+    >
+      <span class="pe-1"><i class="bi bi-door-open"></i></span> Abmelden
+    </a>
+  </li>
+</ul>
+
+<ng-template #spinner>
+  <div class="spinner-border spinner-border-sm text-light" role="status"></div>
+</ng-template>
