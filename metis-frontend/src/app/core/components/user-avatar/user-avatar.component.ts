@@ -1,19 +1,20 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import {Component} from '@angular/core';
+import {AuthService} from '../../services/auth.service';
 
 @Component({
-  selector: 'user-avatar',
-  templateUrl: './user-avatar.component.html',
-  styleUrls: ['./user-avatar.component.scss'],
+    selector: 'user-avatar',
+    templateUrl: './user-avatar.component.html',
+    styleUrls: ['./user-avatar.component.scss'],
 })
 export class UserAvatarComponent {
-  constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService) {
+    }
 
-  get username() {
-    return this.authService.username;
-  }
+    get username$() {
+        return this.authService.username$;
+    }
 
-  logout() {
-    this.authService.logout();
-  }
+    logout() {
+        this.authService.logout();
+    }
 }

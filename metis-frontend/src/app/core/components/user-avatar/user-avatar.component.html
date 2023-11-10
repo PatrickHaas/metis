@@ -4,7 +4,7 @@
   href="#"
   role="button"
   data-bs-toggle="dropdown"
-  *ngIf="username; else spinner"
+  *ngIf="(username$ | async); let username else spinner"
   aria-expanded="false"
 >
   <i
