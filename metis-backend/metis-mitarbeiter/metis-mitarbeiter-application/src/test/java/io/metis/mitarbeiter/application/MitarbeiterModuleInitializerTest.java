@@ -72,11 +72,11 @@ class MitarbeiterModuleInitializerTest {
         }).toList();
 
         when(gruppePrimaryPort.findByName(ADMINISTRATION_GROUP_NAME)).thenReturn(Optional.empty());
-        Gruppe administrationGruppe = new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname(ADMINISTRATION_GROUP_NAME), new Gruppenbeschreibung("A group defining the administrators of a consultio application"), LocalDateTime.now());
-        when(gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(ADMINISTRATION_GROUP_NAME, "A group defining the administrators of a consultio application")))
+        Gruppe administrationGruppe = new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname(ADMINISTRATION_GROUP_NAME), new Gruppenbeschreibung("A group defining the administrators of a metis application"), LocalDateTime.now());
+        when(gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(ADMINISTRATION_GROUP_NAME, "A group defining the administrators of a metis application")))
                 .thenReturn(administrationGruppe);
-        when(mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.de"))
-                .thenReturn(Optional.of(mitarbeiterFactory.create(UUID.randomUUID(), "Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.de", "Application administrator")));
+        when(mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.io"))
+                .thenReturn(Optional.of(mitarbeiterFactory.create(UUID.randomUUID(), "Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.io", "Application administrator")));
 
         initializer.initialize(new ModuleInitializer.Configuration(false));
 
@@ -104,12 +104,12 @@ class MitarbeiterModuleInitializerTest {
                 .toList();
 
         when(berechtigungPrimaryPort.findAll()).thenReturn(berechtigungen);
-        Gruppe administrationGruppe = new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname(ADMINISTRATION_GROUP_NAME), new Gruppenbeschreibung("A group defining the administrators of a consultio application"), LocalDateTime.now());
+        Gruppe administrationGruppe = new Gruppe(new GruppeId(UUID.randomUUID()), new Gruppenname(ADMINISTRATION_GROUP_NAME), new Gruppenbeschreibung("A group defining the administrators of a metis application"), LocalDateTime.now());
         when(gruppePrimaryPort.findByName(ADMINISTRATION_GROUP_NAME)).thenReturn(Optional.of(administrationGruppe));
-        when(mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.de"))
+        when(mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.io"))
                 .thenReturn(Optional.empty());
-        Mitarbeiter mitarbeiter = mitarbeiterFactory.create(UUID.randomUUID(), "Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.de", "Application administrator");
-        when(mitarbeiterPrimaryPort.stelleEin(new StelleMitarbeiterEinCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.de", "Application administrator")))
+        Mitarbeiter mitarbeiter = mitarbeiterFactory.create(UUID.randomUUID(), "Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.io", "Application administrator");
+        when(mitarbeiterPrimaryPort.stelleEin(new StelleMitarbeiterEinCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.io", "Application administrator")))
                 .thenReturn(mitarbeiter);
 
         initializer.initialize(new ModuleInitializer.Configuration(false));

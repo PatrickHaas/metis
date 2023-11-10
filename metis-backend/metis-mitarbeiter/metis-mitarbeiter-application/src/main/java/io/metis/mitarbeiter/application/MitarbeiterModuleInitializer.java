@@ -33,8 +33,8 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
     public void initialize(Configuration configuration) {
         List<Berechtigung> newBerechtigungs = getOrCreatePermissions();
         Gruppe administrationGruppe = getOrCreateAdministrationGroup(newBerechtigungs);
-        if (mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.de").isEmpty()) {
-            Mitarbeiter administrator = mitarbeiterPrimaryPort.stelleEin(new StelleMitarbeiterEinCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.de", "Application administrator"));
+        if (mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.io").isEmpty()) {
+            Mitarbeiter administrator = mitarbeiterPrimaryPort.stelleEin(new StelleMitarbeiterEinCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.io", "Application administrator"));
             log.debug("created application administrator, id = {}", administrator.getId().value());
             mitarbeiterPrimaryPort.weiseGruppeZu(new MitarbeiterEinerGruppeZuweisenCommand(administrationGruppe.getId(), administrator.getId()));
             log.debug("assigned application administrator to administration group {}", administrationGruppe.getName());
@@ -73,7 +73,7 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
     private Gruppe getOrCreateAdministrationGroup(List<Berechtigung> neueBerechtigungen) {
         Gruppe administrationGruppe = gruppePrimaryPort.findByName(ADMINISTRATION_GROUP_NAME).orElse(null);
         if (administrationGruppe == null) {
-            administrationGruppe = gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(ADMINISTRATION_GROUP_NAME, "A group defining the administrators of a consultio application"));
+            administrationGruppe = gruppePrimaryPort.initiiere(new InitiiereGruppeCommand(ADMINISTRATION_GROUP_NAME, "A group defining the administrators of a metis application"));
             log.debug("initiated group, name = {}, description = {}", administrationGruppe.getName(), administrationGruppe.getBeschreibung());
         }
         for (Berechtigung newBerechtigung : neueBerechtigungen) {

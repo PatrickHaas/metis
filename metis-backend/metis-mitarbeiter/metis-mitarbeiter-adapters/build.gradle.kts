@@ -28,6 +28,8 @@ dependencies {
     implementation(project(":metis-backend:metis-mitarbeiter:metis-mitarbeiter-domain"))
     implementation(project(":metis-backend:metis-mitarbeiter:metis-mitarbeiter-application"))
 
+    implementation("org.keycloak:keycloak-admin-client:21.1.2")
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")

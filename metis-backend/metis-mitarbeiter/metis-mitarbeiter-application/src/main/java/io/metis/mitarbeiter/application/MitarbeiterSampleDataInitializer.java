@@ -23,8 +23,8 @@ public class MitarbeiterSampleDataInitializer implements ModuleInitializer {
 
     public static final String EMPLOYEE_GROUP_NAME = "employee";
     public static final String BACKOFFICE_GROUP_NAME = "backoffice";
-    private static final String EMAIL_ERNST_EMPLOYEE = "ernst.employee@consultio.de";
-    private static final String EMAIL_BERTA_EMPLOYEE = "berta.backoffice@consultio.de";
+    private static final String EMAIL_ERNST_EMPLOYEE = "ernst.employee@metis.io";
+    private static final String EMAIL_BERTA_EMPLOYEE = "berta.backoffice@metis.io";
 
     private final GruppePrimaryPort gruppePrimaryPort;
     private final MitarbeiterPrimaryPort mitarbeiterPrimaryPort;

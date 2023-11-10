@@ -14,14 +14,14 @@ spring:
   mail:
     host: localhost
     port: 1025
-    username: info@consultio.de
+    username: info@metis.io
     password: null
 
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/consultio
+          issuer-uri: http://localhost:8080/realms/metis
 
 keycloak:
   url: http://localhost:8080
@@ -30,4 +30,4 @@ keycloak:
 
 modules:
   initialize: true
-  sample-data: false
+  sample-data: true
