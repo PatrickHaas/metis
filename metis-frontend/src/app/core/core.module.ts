@@ -8,6 +8,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {AuthModule, LogLevel} from "angular-auth-oidc-client";
 import {UserAvatarComponent} from "./components/user-avatar/user-avatar.component";
 import {HasPermissionDirective} from "./directives/has-permission.directive";
+import {DebugModeComponent} from "./components/debug-mode/debug-mode.component";
 
 registerLocaleData(localeDe, 'de');
 
@@ -16,10 +17,12 @@ registerLocaleData(localeDe, 'de');
     declarations: [
         MainNavigationComponent,
         UserAvatarComponent,
+        DebugModeComponent,
         HasPermissionDirective,
     ],
     exports: [
         MainNavigationComponent,
+        DebugModeComponent
     ],
     imports: [
         CommonModule,
