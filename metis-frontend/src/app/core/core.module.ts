@@ -29,7 +29,7 @@ registerLocaleData(localeDe, 'de');
                 postLoginRoute: '/home',
                 forbiddenRoute: '/forbidden',
                 unauthorizedRoute: '/unauthorized',
-                logLevel: LogLevel.Debug,
+                logLevel: LogLevel.Warn,
                 historyCleanupOff: true,
                 authority: 'http://localhost:8080/realms/metis',
                 redirectUrl: window.location.origin,
