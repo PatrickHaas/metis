@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 class MitarbeiterPersistenceConfiguration {
     @Bean
-    MitarbeiterMapper mitarbeiterMapper(MitarbeiterFactory mitarbeiterFactory) {
-        return new MitarbeiterMapper(mitarbeiterFactory);
+    MitarbeiterPersistenceMapper mitarbeiterMapper(MitarbeiterFactory mitarbeiterFactory) {
+        return new MitarbeiterPersistenceMapper(mitarbeiterFactory);
     }
 }

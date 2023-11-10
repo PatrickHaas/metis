@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
+//@Repository
 class MitarbeiterPersistenceAdapter extends AbstractJpaPersistenceAdapter<MitarbeiterSpringRepository, Mitarbeiter, MitarbeiterId, MitarbeiterEntity, UUID> implements MitarbeiterRepository {
 
-    MitarbeiterPersistenceAdapter(MitarbeiterSpringRepository repository, MitarbeiterMapper mapper) {
+    MitarbeiterPersistenceAdapter(MitarbeiterSpringRepository repository, MitarbeiterPersistenceMapper mapper) {
         super(repository, mapper::to, mapper::from, MitarbeiterId::value);
     }
 

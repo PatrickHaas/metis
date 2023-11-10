@@ -4,13 +4,11 @@ import io.metis.mitarbeiter.domain.gruppe.GruppeId;
 import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import io.metis.mitarbeiter.domain.mitarbeiter.MitarbeiterFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
-class MitarbeiterMapper {
+class MitarbeiterPersistenceMapper {
 
     private final MitarbeiterFactory mitarbeiterFactory;
 

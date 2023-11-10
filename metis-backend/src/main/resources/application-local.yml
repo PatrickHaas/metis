@@ -27,3 +27,6 @@ keycloak:
   url: http://localhost:8080
   username: admin
   password: Pa55w0rd
+
+modules:
+  initialize: true

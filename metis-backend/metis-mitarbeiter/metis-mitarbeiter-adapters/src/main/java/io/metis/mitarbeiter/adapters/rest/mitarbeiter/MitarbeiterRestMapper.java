@@ -3,11 +3,9 @@ package io.metis.mitarbeiter.adapters.rest.mitarbeiter;
 import io.metis.mitarbeiter.domain.gruppe.GruppeId;
 import io.metis.mitarbeiter.domain.mitarbeiter.Mitarbeiter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
-@Component
 @RequiredArgsConstructor
 class MitarbeiterRestMapper {
 
