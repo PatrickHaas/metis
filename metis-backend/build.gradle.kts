@@ -19,12 +19,12 @@ dependencies {
 
     implementation(libs.logback.core)
 
-    implementation(project(":metis-common:metis-common-domain"))
-    implementation(project(":metis-common:metis-common-application"))
-    implementation(project(":metis-common:metis-common-adapters"))
-    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-domain"))
-    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-application"))
-    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-adapters"))
+    implementation(project(":metis-backend:metis-common:metis-common-domain"))
+    implementation(project(":metis-backend:metis-common:metis-common-application"))
+    implementation(project(":metis-backend:metis-common:metis-common-adapters"))
+    implementation(project(":metis-backend:metis-mitarbeiter:metis-mitarbeiter-domain"))
+    implementation(project(":metis-backend:metis-mitarbeiter:metis-mitarbeiter-application"))
+    implementation(project(":metis-backend:metis-mitarbeiter:metis-mitarbeiter-adapters"))
 
     implementation("org.reflections:reflections:0.10.2")
 

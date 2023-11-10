@@ -18,9 +18,9 @@ dependencies {
     implementation(libs.jmolecules.ddd)
     implementation(libs.jmolecules.hexagonal.architecture)
 
-    implementation(project(":metis-common:metis-common-domain"))
-    implementation(project(":metis-common:metis-common-application"))
-    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-domain"))
+    implementation(project(":metis-backend:metis-common:metis-common-domain"))
+    implementation(project(":metis-backend:metis-common:metis-common-application"))
+    implementation(project(":metis-backend:metis-mitarbeiter:metis-mitarbeiter-domain"))
     implementation(libs.slf4j.api)
 
     testImplementation(platform(libs.junit.jupiter.bom))

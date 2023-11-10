@@ -6,7 +6,7 @@ plugins {
     id("org.sonarqube") version "4.4.1.3373"
 }
 
-group = "io.metis.employees"
+group = "io.metis.common"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -22,11 +22,10 @@ dependencies {
 
     implementation(libs.logback.core)
 
-    implementation(project(":metis-common:metis-common-domain"))
-    implementation(project(":metis-common:metis-common-application"))
-    implementation(project(":metis-common:metis-common-adapters"))
-    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-domain"))
-    implementation(project(":metis-mitarbeiter:metis-mitarbeiter-application"))
+    implementation(project(":metis-backend:metis-common:metis-common-domain"))
+    implementation(project(":metis-backend:metis-common:metis-common-application"))
+
+    implementation("org.reflections:reflections:0.10.2")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -35,7 +34,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
-    implementation("org.liquibase:liquibase-core")
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation("org.postgresql:postgresql:42.6.0")
 

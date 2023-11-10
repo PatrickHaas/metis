@@ -19,7 +19,7 @@ dependencies {
     implementation(libs.jmolecules.events)
     implementation(libs.jmolecules.hexagonal.architecture)
 
-    implementation(project(":metis-common:metis-common-domain"))
+    implementation(project(":metis-backend:metis-common:metis-common-domain"))
     implementation(libs.slf4j.api)
 
     testImplementation(platform(libs.junit.jupiter.bom))

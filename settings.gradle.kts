@@ -23,10 +23,10 @@ dependencyResolutionManagement {
 
 include("metis-backend")
 
-include("metis-common:metis-common-domain")
-include("metis-common:metis-common-application")
-include("metis-common:metis-common-adapters")
+include("metis-backend:metis-common:metis-common-domain")
+include("metis-backend:metis-common:metis-common-application")
+include("metis-backend:metis-common:metis-common-adapters")
 
-include("metis-mitarbeiter:metis-mitarbeiter-domain")
-include("metis-mitarbeiter:metis-mitarbeiter-application")
-include("metis-mitarbeiter:metis-mitarbeiter-adapters")
+include("metis-backend:metis-mitarbeiter:metis-mitarbeiter-domain")
+include("metis-backend:metis-mitarbeiter:metis-mitarbeiter-application")
+include("metis-backend:metis-mitarbeiter:metis-mitarbeiter-adapters")
