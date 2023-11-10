@@ -1,7 +1,7 @@
 {
   "id": "7d321bc9-4184-4490-9663-128519cdbcdd",
   "realm": "metis",
-  "displayName": "Consultio",
+  "displayName": "Metis",
   "displayNameHtml": "",
   "notBefore": 0,
   "defaultSignatureAlgorithm": "RS256",
@@ -1207,7 +1207,7 @@
     "host": "mailhog",
     "replyTo": "",
     "from": "no-reply@metis.io",
-    "fromDisplayName": "Consultio",
+    "fromDisplayName": "Metis",
     "envelopeFrom": "",
     "ssl": "false"
   },
