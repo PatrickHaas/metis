@@ -1,14 +1,41 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {OidcSecurityService} from "angular-auth-oidc-client";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.sass']
 })
-export class AppComponent {
-  title = 'metis-frontend';
+export class AppComponent implements OnInit {
+    constructor(private oidcSecurityService: OidcSecurityService) {
+    }
+
+    ngOnInit() {
+        this.oidcSecurityService
+            .checkAuth()
+            .subscribe(({isAuthenticated, userData, accessToken}) => {
+                console.log('app authenticated', isAuthenticated);
+                console.log(`Current access token is '${accessToken}'`);
+                if (!isAuthenticated) {
+                    this.login();
+                }
+            });
+    }
+
+    login() {
+        console.log('start login');
+        this.oidcSecurityService.authorize();
+    }
+
+    refreshSession() {
+        console.log('start refreshSession');
+        this.oidcSecurityService.authorize();
+    }
+
+    logout() {
+        console.log('start logoff');
+        this.oidcSecurityService
+            .logoff()
+            .subscribe((result) => console.log(result));
+    }
 }

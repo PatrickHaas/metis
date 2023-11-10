@@ -31,8 +31,8 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
 
     @Override
     public void initialize(Configuration configuration) {
-        List<Berechtigung> newBerechtigungs = getOrCreatePermissions();
-        Gruppe administrationGruppe = getOrCreateAdministrationGroup(newBerechtigungs);
+        List<Berechtigung> neueBerechtigungen = getOrCreatePermissions();
+        Gruppe administrationGruppe = getOrCreateAdministrationGroup(neueBerechtigungen);
         if (mitarbeiterPrimaryPort.findByEmailAddress("administrator@metis.io").isEmpty()) {
             Mitarbeiter administrator = mitarbeiterPrimaryPort.stelleEin(new StelleMitarbeiterEinCommand("Arnold", "Admin", LocalDate.of(1970, 1, 1), "administrator@metis.io", "Application administrator"));
             log.debug("created application administrator, id = {}", administrator.getId().value());
@@ -62,12 +62,12 @@ public class MitarbeiterModuleInitializer implements ModuleInitializer {
                 .map(Berechtigung::getSchluessel)
                 .map(Berechtigungsschluessel::value).toList();
         List<InitiiereBerechtigungCommand> newInitiiereBerechtigungCommands = initiiereBerechtigungCommands.stream().filter(command -> !existingPermissionKeys.contains(command.key())).toList();
-        List<Berechtigung> newBerechtigungs = new ArrayList<>();
+        List<Berechtigung> neueBerechtigungen = new ArrayList<>();
         for (InitiiereBerechtigungCommand newPermission : newInitiiereBerechtigungCommands) {
-            newBerechtigungs.add(berechtigungPrimaryPort.initiiere(newPermission));
+            neueBerechtigungen.add(berechtigungPrimaryPort.initiiere(newPermission));
             log.debug("initiated permission, key = {}, description = {}", newPermission.key(), newPermission.description());
         }
-        return newBerechtigungs;
+        return neueBerechtigungen;
     }
 
     private Gruppe getOrCreateAdministrationGroup(List<Berechtigung> neueBerechtigungen) {
