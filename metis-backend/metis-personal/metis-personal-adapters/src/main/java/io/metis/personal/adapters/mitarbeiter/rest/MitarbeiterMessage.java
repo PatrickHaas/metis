@@ -10,9 +10,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Builder
-record MitarbeiterMessage(UUID id, String firstName, String lastName, LocalDate dateOfBirth, LocalDate hiredOn,
-                          String emailAddress,
-                          String jobTitle, Set<UUID> assignedGroups) {
+record MitarbeiterMessage(UUID id, String vorname, String nachname, LocalDate geburtsdatum, LocalDate eingestelltAm,
+                          String emailadresse,
+                          String jobBeschreibung, Set<UUID> zugewieseneGruppen) {
 
     static MitarbeiterMessage from(Mitarbeiter mitarbeiter) {
         return new MitarbeiterMessage(mitarbeiter.getId().value(), mitarbeiter.getVorname().value(), mitarbeiter.getNachname().value(), mitarbeiter.getGeburtsdatum().value(), mitarbeiter.getEinstelltAm().value(), mitarbeiter.getEmailAdresse().value(), mitarbeiter.getJobTitel(), mitarbeiter.getZugewieseneGruppen().stream()

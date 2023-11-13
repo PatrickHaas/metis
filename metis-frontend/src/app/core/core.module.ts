@@ -4,13 +4,14 @@ import {MainNavigationComponent} from "./components/main-navigation/main-navigat
 
 import localeDe from '@angular/common/locales/de';
 import {RouterModule} from "@angular/router";
-import {HttpClientModule} from "@angular/common/http";
-import {AuthModule, LogLevel} from "angular-auth-oidc-client";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {AuthInterceptor, AuthModule, LogLevel} from "angular-auth-oidc-client";
 import {UserAvatarComponent} from "./components/user-avatar/user-avatar.component";
 import {HasPermissionDirective} from "./directives/has-permission.directive";
 import {DebugModeComponent} from "./components/debug-mode/debug-mode.component";
 import {SideBarComponent} from "./components/side-bar/side-bar.component";
 import {PageHeaderComponent} from "./components/page-header/page-header.component";
+import {PageSpinnerComponent} from "./components/page-spinner/page-spinner.component";
 
 registerLocaleData(localeDe, 'de');
 
@@ -22,13 +23,15 @@ registerLocaleData(localeDe, 'de');
         DebugModeComponent,
         HasPermissionDirective,
         SideBarComponent,
-        PageHeaderComponent
+        PageHeaderComponent,
+        PageSpinnerComponent
     ],
     exports: [
         MainNavigationComponent,
         DebugModeComponent,
         SideBarComponent,
-        PageHeaderComponent
+        PageHeaderComponent,
+        PageSpinnerComponent
     ],
     imports: [
         CommonModule,
@@ -50,6 +53,7 @@ registerLocaleData(localeDe, 'de');
                 responseType: 'code',
                 silentRenew: true,
                 useRefreshToken: true,
+                secureRoutes: ['http://localhost:8081/'],
             }
         }),
     ],
@@ -58,7 +62,8 @@ registerLocaleData(localeDe, 'de');
         {provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR'},
         {provide: CurrencyPipe, useClass: CurrencyPipe},
         {provide: DatePipe, useClass: DatePipe},
-        {provide: DecimalPipe, useClass: DecimalPipe}
+        {provide: DecimalPipe, useClass: DecimalPipe},
+        {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
     ]
 })
 export class CoreModule {

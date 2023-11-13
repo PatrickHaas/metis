@@ -1,1 +1,10 @@
-<p>mitarbeiter-dashboard works!</p>
+<page-header title="Alle Mitarbeiter auf einen Blick"></page-header>
+<div class="row g-2" *ngIf="mitarbeiter$ | async; let mitarbeiterListe else spinner">
+    <div class="col-12 col-sm-6 col-xl-4 col-xxl-3" *ngFor="let mitarbeiter of mitarbeiterListe">
+        <mitarbeiter-card [mitarbeiter]="mitarbeiter">
+        </mitarbeiter-card>
+    </div>
+</div>
+<ng-template #spinner>
+    <page-spinner text="Mitarbeiter werden geladen"></page-spinner>
+</ng-template>

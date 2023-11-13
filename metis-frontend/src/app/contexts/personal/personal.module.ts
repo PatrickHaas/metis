@@ -3,12 +3,14 @@ import {CommonModule} from '@angular/common';
 import {CoreModule} from "../../core/core.module";
 import {RouterModule} from "@angular/router";
 import {PersonalComponent} from "./personal.component";
-import {MitarbeiterComponent} from "./mitarbeiter/pages/mitarbeiter/mitarbeiter.component";
+import {MitarbeiterDashboardComponent} from "./mitarbeiter/pages/mitarbeiter-dashboard/mitarbeiter-dashboard.component";
+import {MitarbeiterCardComponent} from "./mitarbeiter/components/mitarbeiter-card/mitarbeiter-card.component";
 
 
 @NgModule({
     declarations: [
-        MitarbeiterComponent
+        MitarbeiterDashboardComponent,
+        MitarbeiterCardComponent
     ],
     imports: [
         CommonModule,
@@ -20,7 +22,7 @@ import {MitarbeiterComponent} from "./mitarbeiter/pages/mitarbeiter/mitarbeiter.
                 children: [
                     {
                         path: 'mitarbeiter',
-                        component: MitarbeiterComponent
+                        component: MitarbeiterDashboardComponent
                     }
                 ]
             }

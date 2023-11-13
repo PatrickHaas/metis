@@ -13,6 +13,7 @@ export type RequiredPermissions = string | string[];
 export class AuthService {
 
     private userData: any;
+    private authorizationToken: string | null = null;
 
     constructor(private oidcSecurityService: OidcSecurityService, private readonly eventService: PublicEventsService) {
         this.oidcSecurityService
@@ -24,6 +25,9 @@ export class AuthService {
             });
         this.oidcSecurityService.userData$.subscribe({
             next: userData => this.userData = userData.userData
+        })
+        this.oidcSecurityService.getAccessToken().subscribe({
+            next: accessToken => this.authorizationToken = accessToken
         })
     }
 
@@ -71,6 +75,10 @@ export class AuthService {
             map(result => result.userData),
             filter(userData => userData != undefined),
             map(userData => userData['roles'] as string[]));
+    }
+
+    getAuthorizationToken() {
+        return this.authorizationToken;
     }
 
 }
