@@ -12,6 +12,7 @@ import {DebugModeComponent} from "./components/debug-mode/debug-mode.component";
 import {SideBarComponent} from "./components/side-bar/side-bar.component";
 import {PageHeaderComponent} from "./components/page-header/page-header.component";
 import {PageSpinnerComponent} from "./components/page-spinner/page-spinner.component";
+import {SectionHeaderComponent} from "./components/section-header/section-header.component";
 
 registerLocaleData(localeDe, 'de');
 
@@ -24,14 +25,16 @@ registerLocaleData(localeDe, 'de');
         HasPermissionDirective,
         SideBarComponent,
         PageHeaderComponent,
-        PageSpinnerComponent
+        PageSpinnerComponent,
+        SectionHeaderComponent
     ],
     exports: [
         MainNavigationComponent,
         DebugModeComponent,
         SideBarComponent,
         PageHeaderComponent,
-        PageSpinnerComponent
+        PageSpinnerComponent,
+        SectionHeaderComponent
     ],
     imports: [
         CommonModule,

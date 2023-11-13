@@ -16,4 +16,7 @@ export class MitarbeiterRestService {
     }
 
 
+    findById(id: string): Observable<Mitarbeiter> {
+        return this.httpClient.get<Mitarbeiter>(`http://localhost:8081/rest/v1/mitarbeiter/${id}`);
+    }
 }

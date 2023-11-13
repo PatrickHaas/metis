@@ -1,0 +1,29 @@
+<ng-container *ngIf="mitarbeiter$ | async; let mitarbeiter else spinner">
+    <page-header [title]="mitarbeiter.vorname + ' ' + mitarbeiter.nachname"></page-header>
+
+    <section-header title="Stammdaten"></section-header>
+    <div class="row">
+        <div class="col"><strong>Einstellungsdatum</strong></div>
+        <div class="col">{{mitarbeiter.eingestelltAm | date}}</div>
+    </div>
+    <div class="row">
+        <div class="col"><strong>Geburtsdatum</strong></div>
+        <div class="col">{{mitarbeiter.geburtsdatum | date}}</div>
+    </div>
+    <div class="row">
+        <div class="col"><strong>Jobbeschreibung</strong></div>
+        <div class="col">{{mitarbeiter.jobBeschreibung}}</div>
+    </div>
+    <div class="row">
+        <div class="col"><strong>E-Mailadresse</strong></div>
+        <div class="col"><a [href]="'mailto:'+mitarbeiter.emailadresse">{{mitarbeiter.emailadresse}}</a></div>
+    </div>
+
+    <mitarbeiter-zugewiesene-gruppen [mitarbeiter]="mitarbeiter"></mitarbeiter-zugewiesene-gruppen>
+
+</ng-container>
+
+<ng-template #spinner>
+    <page-spinner text="Mitarbeiterdetails werden geladen"></page-spinner>
+</ng-template>
+
