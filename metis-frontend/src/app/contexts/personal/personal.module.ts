@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {CoreModule} from "../../core/core.module";
 import {RouterModule} from "@angular/router";
 import {PersonalComponent} from "./personal.component";
-import {MitarbeiterComponent} from "./pages/mitarbeiter/mitarbeiter.component";
+import {MitarbeiterComponent} from "./mitarbeiter/pages/mitarbeiter/mitarbeiter.component";
 
 
 @NgModule({
