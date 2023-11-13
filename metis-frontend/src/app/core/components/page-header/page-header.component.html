@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-sm bg-white">
+    <div class="container-fluid px-0">
+        <h4>{{title}}</h4>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#pageNavbarSupportedContent"
+                aria-controls="pageNavbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="pageNavbarSupportedContent">
+            <ul class="navbar-nav me-auto">
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item  ms-2" *ngFor="let action of allowedActions">
+                    <a class="btn" [class.btn-outline-primary]="!action.primary" [class.btn-primary]="action.primary"
+                       aria-current="page" href="#"
+                       [routerLink]="action.routerLink">{{action.title}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

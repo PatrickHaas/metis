@@ -53,16 +53,16 @@ class MitarbeiterModuleInitializerTest {
         List<Berechtigung> berechtigungen = Stream.of(
                 new InitiiereBerechtigungCommand("employees", "Genereller Zugriff zum Modul für Mitarbeiterstammdaten"),
 
-                new InitiiereBerechtigungCommand("employees:employees:list", "Anzeige aller Mitarbeiterstammdaten"),
-                new InitiiereBerechtigungCommand("employees:employees:show", "Einsicht in einzelne Mitarbeiterstammdaten"),
-                new InitiiereBerechtigungCommand("employees:employees:hire", "Einstellen neuer Mitarbeiter"),
-                new InitiiereBerechtigungCommand("employees:employees:edit", "Aktualisieren von Mitarbeiterstammdaten"),
-                new InitiiereBerechtigungCommand("employees:employees:delete", "Entfernen von Mitarbeitern"),
-                new InitiiereBerechtigungCommand("employees:employees:assigned-groups:show", "Gruppenzuweisungen von Mitarbeitern ansehen"),
-                new InitiiereBerechtigungCommand("employees:employees:assign-to-group", "Mitarbeiter einer Gruppe zuweisen"),
+                new InitiiereBerechtigungCommand("personnel:employees:list", "Anzeige aller Mitarbeiterstammdaten"),
+                new InitiiereBerechtigungCommand("personnel:employees:show", "Einsicht in einzelne Mitarbeiterstammdaten"),
+                new InitiiereBerechtigungCommand("personnel:employees:hire", "Einstellen neuer Mitarbeiter"),
+                new InitiiereBerechtigungCommand("personnel:employees:edit", "Aktualisieren von Mitarbeiterstammdaten"),
+                new InitiiereBerechtigungCommand("personnel:employees:delete", "Entfernen von Mitarbeitern"),
+                new InitiiereBerechtigungCommand("personnel:employees:assigned-groups:show", "Gruppenzuweisungen von Mitarbeitern ansehen"),
+                new InitiiereBerechtigungCommand("personnel:employees:assign-to-group", "Mitarbeiter einer Gruppe zuweisen"),
 
-                new InitiiereBerechtigungCommand("employees:groups:list", "Anzeige aller Gruppen"),
-                new InitiiereBerechtigungCommand("employees:groups:initiate", "Neuer Gruppen initiieren")
+                new InitiiereBerechtigungCommand("personnel:groups:list", "Anzeige aller Gruppen"),
+                new InitiiereBerechtigungCommand("personnel:groups:initiate", "Neuer Gruppen initiieren")
         ).map(command -> {
             Berechtigung berechtigung = new Berechtigung(new Berechtigungsschluessel(command.key()), new Berechtigungsbeschreibung(command.description()));
             when(berechtigungPrimaryPort.initiiere(command))
@@ -89,16 +89,16 @@ class MitarbeiterModuleInitializerTest {
         List<Berechtigung> berechtigungen = Stream.of(
                         new InitiiereBerechtigungCommand("employees", "Genereller Zugriff zum Modul für Mitarbeiterstammdaten"),
 
-                        new InitiiereBerechtigungCommand("employees:employees:list", "Anzeige aller Mitarbeiterstammdaten"),
-                        new InitiiereBerechtigungCommand("employees:employees:show", "Einsicht in einzelne Mitarbeiterstammdaten"),
-                        new InitiiereBerechtigungCommand("employees:employees:hire", "Einstellen neuer Mitarbeiter"),
-                        new InitiiereBerechtigungCommand("employees:employees:edit", "Aktualisieren von Mitarbeiterstammdaten"),
-                        new InitiiereBerechtigungCommand("employees:employees:delete", "Entfernen von Mitarbeitern"),
-                        new InitiiereBerechtigungCommand("employees:employees:assigned-groups:show", "Gruppenzuweisungen von Mitarbeitern ansehen"),
-                        new InitiiereBerechtigungCommand("employees:employees:assign-to-group", "Mitarbeiter einer Gruppe zuweisen"),
+                        new InitiiereBerechtigungCommand("personnel:employees:list", "Anzeige aller Mitarbeiterstammdaten"),
+                        new InitiiereBerechtigungCommand("personnel:employees:show", "Einsicht in einzelne Mitarbeiterstammdaten"),
+                        new InitiiereBerechtigungCommand("personnel:employees:hire", "Einstellen neuer Mitarbeiter"),
+                        new InitiiereBerechtigungCommand("personnel:employees:edit", "Aktualisieren von Mitarbeiterstammdaten"),
+                        new InitiiereBerechtigungCommand("personnel:employees:delete", "Entfernen von Mitarbeitern"),
+                        new InitiiereBerechtigungCommand("personnel:employees:assigned-groups:show", "Gruppenzuweisungen von Mitarbeitern ansehen"),
+                        new InitiiereBerechtigungCommand("personnel:employees:assign-to-group", "Mitarbeiter einer Gruppe zuweisen"),
 
-                        new InitiiereBerechtigungCommand("employees:groups:list", "Anzeige aller Gruppen"),
-                        new InitiiereBerechtigungCommand("employees:groups:initiate", "Neuer Gruppen initiieren")
+                        new InitiiereBerechtigungCommand("personnel:groups:list", "Anzeige aller Gruppen"),
+                        new InitiiereBerechtigungCommand("personnel:groups:initiate", "Neuer Gruppen initiieren")
                 ).map(command -> new Berechtigung(new Berechtigungsschluessel(command.key()), new Berechtigungsbeschreibung(command.description())))
                 .toList();
 

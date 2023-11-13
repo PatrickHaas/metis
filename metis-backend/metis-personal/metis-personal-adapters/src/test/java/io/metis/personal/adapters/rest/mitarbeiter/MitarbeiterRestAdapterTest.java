@@ -79,7 +79,7 @@ class MitarbeiterRestAdapterTest {
         when(primaryPort.findAll()).thenReturn(List.of(tony, bruce));
         List<MitarbeiterMessage> mitarbeiterMessages = objectMapper.readValue(mockMvc.perform(get("/rest/v1/mitarbeiter")
                         .with(csrf())
-                        .with(jwt().authorities(new SimpleGrantedAuthority("employees:employees:list"))))
+                        .with(jwt().authorities(new SimpleGrantedAuthority("personnel:employees:list"))))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), new TypeReference<>() {
         });
@@ -110,7 +110,7 @@ class MitarbeiterRestAdapterTest {
         when(primaryPort.getById(mitarbeiterId)).thenThrow(new MitarbeiterNotFoundException(mitarbeiterId));
         mockMvc.perform(get("/rest/v1/mitarbeiter/{id}", mitarbeiterId.value())
                         .with(csrf())
-                        .with(jwt().authorities(new SimpleGrantedAuthority("employees:employees:show"))))
+                        .with(jwt().authorities(new SimpleGrantedAuthority("personnel:employees:show"))))
                 .andExpect(status().isNotFound());
     }
 
@@ -122,7 +122,7 @@ class MitarbeiterRestAdapterTest {
         when(primaryPort.getById(mitarbeiterId)).thenReturn(tony);
         MitarbeiterMessage mitarbeiterMessage = objectMapper.readValue(mockMvc.perform(get("/rest/v1/mitarbeiter/{id}", mitarbeiterId.value())
                         .with(csrf())
-                        .with(jwt().authorities(new SimpleGrantedAuthority("employees:employees:show"))))
+                        .with(jwt().authorities(new SimpleGrantedAuthority("personnel:employees:show"))))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), MitarbeiterMessage.class);
         assertThat(mitarbeiterMessage).isEqualTo(MitarbeiterMessage.from(tony));
@@ -247,7 +247,7 @@ class MitarbeiterRestAdapterTest {
                         .content(objectMapper.writeValueAsBytes(new StelleMitarbeiterEinMessage("Tony", "Stark", LocalDate.of(1970, 5, 29), "tony@avengers.com", "Iron-Man")))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
-                        .with(jwt().authorities(new SimpleGrantedAuthority("employees:employees:hire"))))
+                        .with(jwt().authorities(new SimpleGrantedAuthority("personnel:employees:hire"))))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString(StandardCharsets.UTF_8), MitarbeiterMessage.class);
         assertThat(mitarbeiterMessage).isEqualTo(MitarbeiterMessage.from(tony));

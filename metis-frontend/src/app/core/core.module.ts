@@ -10,6 +10,7 @@ import {UserAvatarComponent} from "./components/user-avatar/user-avatar.componen
 import {HasPermissionDirective} from "./directives/has-permission.directive";
 import {DebugModeComponent} from "./components/debug-mode/debug-mode.component";
 import {SideBarComponent} from "./components/side-bar/side-bar.component";
+import {PageHeaderComponent} from "./components/page-header/page-header.component";
 
 registerLocaleData(localeDe, 'de');
 
@@ -20,12 +21,14 @@ registerLocaleData(localeDe, 'de');
         UserAvatarComponent,
         DebugModeComponent,
         HasPermissionDirective,
-        SideBarComponent
+        SideBarComponent,
+        PageHeaderComponent
     ],
     exports: [
         MainNavigationComponent,
         DebugModeComponent,
-        SideBarComponent
+        SideBarComponent,
+        PageHeaderComponent
     ],
     imports: [
         CommonModule,

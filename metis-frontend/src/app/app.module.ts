@@ -5,7 +5,7 @@ import {RouterModule} from "@angular/router";
 import {EventTypes, PublicEventsService} from "angular-auth-oidc-client";
 import {filter} from "rxjs";
 import {CoreModule} from "./core/core.module";
-import {MitarbeiterModule} from "./contexts/mitarbeiter/mitarbeiter.module";
+import {PersonalModule} from "./contexts/personal/personal.module";
 
 @NgModule({
     declarations: [
@@ -15,7 +15,7 @@ import {MitarbeiterModule} from "./contexts/mitarbeiter/mitarbeiter.module";
         BrowserModule,
         CoreModule,
         RouterModule.forRoot([]),
-        MitarbeiterModule
+        PersonalModule
     ],
     providers: [],
     bootstrap: [AppComponent]

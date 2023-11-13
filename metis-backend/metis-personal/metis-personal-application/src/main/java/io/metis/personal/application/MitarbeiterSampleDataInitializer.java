@@ -45,13 +45,13 @@ public class MitarbeiterSampleDataInitializer implements ModuleInitializer {
         Gruppe backofficeGruppe = getOrCreateBackofficeGroup();
         List<String> backofficePermissions = List.of(
                 "employees",
-                "employees:employees:list",
-                "employees:employees:show",
-                "employees:employees:hire",
-                "employees:employees:edit",
-                "employees:employees:assigned-groups:show",
-                "employees:employees:assign-to-group",
-                "employees:groups:list"
+                "personnel:employees:list",
+                "personnel:employees:show",
+                "personnel:employees:hire",
+                "personnel:employees:edit",
+                "personnel:employees:assigned-groups:show",
+                "personnel:employees:assign-to-group",
+                "personnel:groups:list"
         );
         List<Berechtigung> missingBackofficeBerechtigungs = backofficePermissions.stream()
                 .map(berechtigungPrimaryPort::getByKey)

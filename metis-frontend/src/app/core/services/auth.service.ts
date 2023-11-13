@@ -12,6 +12,8 @@ export type RequiredPermissions = string | string[];
 })
 export class AuthService {
 
+    private userData: any;
+
     constructor(private oidcSecurityService: OidcSecurityService, private readonly eventService: PublicEventsService) {
         this.oidcSecurityService
             .checkAuth()
@@ -20,6 +22,9 @@ export class AuthService {
                     this.login();
                 }
             });
+        this.oidcSecurityService.userData$.subscribe({
+            next: userData => this.userData = userData.userData
+        })
     }
 
     get events() {
@@ -57,8 +62,8 @@ export class AuthService {
         );
     }
 
-    private hasResourceOrRealmRole(role: string): Observable<boolean> {
-        return this.roles$.pipe(map((roles) => roles.find((r: string) => role == r) !== undefined));
+    private hasResourceOrRealmRole(role: string): boolean {
+        return this.userData['roles'].find((r: string) => role == r) !== undefined;
     }
 
     get roles$(): Observable<string[]> {
