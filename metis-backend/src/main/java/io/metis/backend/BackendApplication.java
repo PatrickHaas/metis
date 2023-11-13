@@ -5,8 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("io.metis.common")
-@ComponentScan("io.metis.mitarbeiter")
+@ComponentScan("io.metis")
 public class BackendApplication {
 
     public static void main(String[] args) {

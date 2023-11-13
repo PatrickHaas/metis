@@ -17,6 +17,9 @@ dependencies {
     annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
 
+    implementation(libs.jmolecules.ddd)
+    implementation(libs.jmolecules.hexagonal.architecture)
+
     implementation(libs.logback.core)
 
     implementation(project(":metis-backend:metis-common:metis-common-domain"))
@@ -24,9 +27,8 @@ dependencies {
     implementation(project(":metis-backend:metis-common:metis-common-adapters"))
     implementation(project(":metis-backend:metis-personal:metis-personal-domain"))
     implementation(project(":metis-backend:metis-personal:metis-personal-application"))
-    implementation(project(":metis-backend:metis-personal:metis-personal-adapters"))
 
-    implementation("org.reflections:reflections:0.10.2")
+    implementation("org.keycloak:keycloak-admin-client:21.1.2")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -35,6 +37,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
+    implementation("org.liquibase:liquibase-core")
     // https://mvnrepository.com/artifact/org.postgresql/postgresql
     implementation("org.postgresql:postgresql:42.6.0")
 

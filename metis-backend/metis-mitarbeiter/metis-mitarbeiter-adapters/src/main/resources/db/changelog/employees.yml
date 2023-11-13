@@ -1,3 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/changelog/202310131955_create-employees-schema.yml

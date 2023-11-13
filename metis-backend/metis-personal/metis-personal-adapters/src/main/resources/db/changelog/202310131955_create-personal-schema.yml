@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 202310131955-create-personal-schema
+      author: Patrick Haas
+      changes:
+        - sql:
+            sql: create schema personal;
+        - createTable:
+            schemaName: personal
+            tableName: mitarbeiter
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: vorname
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: nachname
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: geburtsdatum
+                  type: date
+              - column:
+                  name: eingestellt_am
+                  type: date
+              - column:
+                  name: emailadresse
+                  type: text
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: job_beschreibung
+                  type: text
+        - createTable:
+            schemaName: personal
+            tableName: mitarbeiter_zugewiesene_gruppen
+            columns:
+              - column:
+                  name: mitarbeiter_id
+                  type: uuid
+              - column:
+                  name: zugewiesene_gruppen
+                  type: uuid
