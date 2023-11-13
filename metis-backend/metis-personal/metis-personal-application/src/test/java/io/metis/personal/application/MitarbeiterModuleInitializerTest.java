@@ -51,7 +51,7 @@ class MitarbeiterModuleInitializerTest {
     void initialize_createsAdminGroup_whenItDoesNotExist() {
         when(berechtigungPrimaryPort.findAll()).thenReturn(Collections.emptyList());
         List<Berechtigung> berechtigungen = Stream.of(
-                new InitiiereBerechtigungCommand("employees", "Genereller Zugriff zum Modul für Mitarbeiterstammdaten"),
+                new InitiiereBerechtigungCommand("personnel", "Genereller Zugriff zum Modul für Mitarbeiterstammdaten"),
 
                 new InitiiereBerechtigungCommand("personnel:employees:list", "Anzeige aller Mitarbeiterstammdaten"),
                 new InitiiereBerechtigungCommand("personnel:employees:show", "Einsicht in einzelne Mitarbeiterstammdaten"),
@@ -87,7 +87,7 @@ class MitarbeiterModuleInitializerTest {
     @Test
     void initialize_createsAdminEmployee_whenItDoesNotExist() {
         List<Berechtigung> berechtigungen = Stream.of(
-                        new InitiiereBerechtigungCommand("employees", "Genereller Zugriff zum Modul für Mitarbeiterstammdaten"),
+                        new InitiiereBerechtigungCommand("personnel", "Genereller Zugriff zum Modul für Mitarbeiterstammdaten"),
 
                         new InitiiereBerechtigungCommand("personnel:employees:list", "Anzeige aller Mitarbeiterstammdaten"),
                         new InitiiereBerechtigungCommand("personnel:employees:show", "Einsicht in einzelne Mitarbeiterstammdaten"),
