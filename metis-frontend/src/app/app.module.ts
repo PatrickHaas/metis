@@ -2,9 +2,10 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {AppComponent} from './app.component';
 import {RouterModule} from "@angular/router";
-import {AuthModule, EventTypes, LogLevel, PublicEventsService} from "angular-auth-oidc-client";
+import {EventTypes, PublicEventsService} from "angular-auth-oidc-client";
 import {filter} from "rxjs";
 import {CoreModule} from "./core/core.module";
+import {MitarbeiterModule} from "./contexts/mitarbeiter/mitarbeiter.module";
 
 @NgModule({
     declarations: [
@@ -14,6 +15,7 @@ import {CoreModule} from "./core/core.module";
         BrowserModule,
         CoreModule,
         RouterModule.forRoot([]),
+        MitarbeiterModule
     ],
     providers: [],
     bootstrap: [AppComponent]

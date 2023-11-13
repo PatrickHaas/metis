@@ -1,0 +1,28 @@
+<div class="d-lg-flex flex-nowrap w-100 container-fluid p-1">
+  <nav class="navbar navbar-light navbar-expand-sm bg-light m-md-0 m-lg-2 py-1 px-2 rounded side-bar sticky-top">
+    <div class="container-fluid px-0">
+      <span>&nbsp;</span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#pageSidebarNavSupportedContent"
+              aria-controls="pageSidebarNavSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="pageSidebarNavSupportedContent">
+        <ul class="navbar-nav me-auto flex-lg-column">
+          <li class="nav-item" *ngFor="let element of allowedElements">
+            <a href="#" class="nav-link" [routerLink]="element.routerLink" routerLinkActive="active"
+               aria-current="page">
+              {{element.title}}
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid m-0 px-2">
+    <router-outlet></router-outlet>
+  </div>
+</div>
